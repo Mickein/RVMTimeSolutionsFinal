@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomTimePicker" parent="@style/Widget.MaterialComponents.TimePicker">
+        <!-- Customize the color of the selectors -->
+        <item name="android:colorControlActivated">#8cd8f6</item> <!-- This color is used for the selectors when they are activated/selected -->
+        <item name="android:colorControlNormal">#8cd8f6</item> <!-- This color is used for the selectors when they are not activated/selected -->
+    </style>
+</resources>

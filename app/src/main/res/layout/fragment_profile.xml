@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,37 +20,24 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name:"
-                android:textSize="24sp" />
-
-            <EditText
-                android:id="@+id/edtName"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:ems="10"
-                android:inputType="text"
-                android:textSize="20sp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="25dp" />
-
-            <TextView
                 android:id="@+id/txtSurname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/londrina_solid"
                 android:text="Surname:"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/edtSurname"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
+                android:layout_height="44dp"
+                android:drawableLeft="@drawable/baseline_personicon"
+                android:drawableRight="@drawable/baseline_edit"
                 android:ems="10"
-                android:inputType="text" />
+                android:fontFamily="@font/londrina_solid"
+                android:inputType="text"
+                android:text="Mahato"
+                android:textSize="24sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -59,15 +47,97 @@
                 android:id="@+id/txtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/londrina_solid"
                 android:text="Email:"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
+                android:layout_height="44dp"
+                android:drawableLeft="@drawable/baseline_email"
+                android:drawableRight="@drawable/baseline_edit"
                 android:ems="10"
-                android:inputType="text" />
+                android:fontFamily="@font/londrina_solid"
+                android:inputType="text"
+                android:text="rushilmahato@gmail.com"
+                android:textSize="24sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
+
+            <TextView
+                android:id="@+id/txtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/londrina_solid"
+                android:text="Password:"
+                android:textSize="30sp" />
+
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:drawableLeft="@drawable/baseline_password"
+                android:drawableRight="@drawable/baseline_edit"
+                android:ems="10"
+                android:fontFamily="@font/londrina_solid"
+                android:inputType="textPassword"
+                android:text="mahato123"
+                android:textSize="24sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
+
+            <TextView
+                android:id="@+id/txtGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/londrina_solid"
+                android:text="Gender:"
+                android:textSize="30sp" />
+
+            <EditText
+                android:id="@+id/edtGender"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:drawableLeft="@drawable/baseline_personicon"
+                android:drawableRight="@drawable/baseline_edit"
+                android:ems="10"
+                android:fontFamily="@font/londrina_solid"
+                android:inputType="text"
+                android:text="FEMALE"
+                android:textSize="24sp" />
         </LinearLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="129dp"
+        android:layout_height="111dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="25dp"
+        tools:src="@drawable/baseline_personicon" />
+
+    <TextView
+        android:id="@+id/txtProfileHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:fontFamily="@font/londrina_solid"
+        android:text="Profile"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/txtName2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="145dp"
+        android:drawableRight="@drawable/baseline_edit"
+        android:fontFamily="@font/londrina_solid"
+        android:text="Rushil"
+        android:textSize="34sp" />
 </FrameLayout>
