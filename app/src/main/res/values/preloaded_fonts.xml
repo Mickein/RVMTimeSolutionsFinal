@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/bungee_inline</item>
+        <item>@font/gupter_medium</item>
+        <item>@font/londrina_solid</item>
+        <item>@font/luckiest_guy</item>
+        <item>@font/notable</item>
+        <item>@font/oxygen_mono</item>
+    </array>
+</resources>
