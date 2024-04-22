@@ -34,7 +34,8 @@ class DashboardFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
-        
+        pieChart = view.findViewById(R.id.pie_chart)
+        barChart = view.findViewById(R.id.bar_chart)
 
         setupPieChart()
         setupBarChart()
