@@ -75,6 +75,8 @@
                 android:text="Password:"
                 android:textSize="30sp" />
 
+
+
             <EditText
                 android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
