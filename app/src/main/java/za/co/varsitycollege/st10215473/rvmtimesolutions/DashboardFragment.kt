@@ -21,12 +21,16 @@ import com.github.mikephil.charting.utils.ColorTemplate
 
 class DashboardFragment : Fragment() {
 
-
-
     private lateinit var pieChart: PieChart
     private lateinit var progressBar: ProgressBar
     private lateinit var seekBar: SeekBar
     private lateinit var barChart: BarChart
+
+
+
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
