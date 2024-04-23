@@ -11,6 +11,7 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 mpandroidchart = "3.1.0"
 
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -21,6 +22,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 mpandroidchart = {group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart"}
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

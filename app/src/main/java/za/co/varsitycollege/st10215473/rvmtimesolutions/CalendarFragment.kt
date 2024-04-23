@@ -40,6 +40,7 @@ class CalendarFragment : Fragment() {
         calendar = view.findViewById(R.id.calendarView)
         linear = view.findViewById(R.id.linearLayout)
 
+
         calendar.setOnDateChangeListener { _, year, month, dayOfMonth->
             val calendar = Calendar.getInstance()
             calendar.set(year, month, dayOfMonth)
