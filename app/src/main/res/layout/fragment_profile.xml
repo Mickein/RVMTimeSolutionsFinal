@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="15dp"
-        android:fontFamily="@font/londrina_solid"
+        android:fontFamily="@font/ubuntu"
         android:text="Rushil"
         android:textColor="#111111"
         android:textSize="34sp" />
@@ -29,13 +29,14 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="422dp"
         android:layout_gravity="top|center"
         android:layout_marginTop="220dp"
         app:cardCornerRadius="30dp">
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="447dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="20dp"
                     android:clickable="false"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/ubuntu"
                     android:text="Surname:"
                     android:textSize="30sp" />
 
@@ -59,13 +60,13 @@
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/roundstyle"
+
                     android:clickable="true"
                     android:drawableLeft="@drawable/baseline_personicon"
                     android:drawableRight="@drawable/baseline_edit"
                     android:drawablePadding="30dp"
                     android:ems="10"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
                     android:text="Mahatho"
@@ -78,7 +79,7 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
                     android:clickable="false"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/ubuntu"
                     android:text="Email:"
                     android:textSize="30sp" />
 
@@ -88,16 +89,15 @@
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/roundstyle"
                     android:clickable="true"
                     android:drawableLeft="@drawable/baseline_email"
                     android:drawableRight="@drawable/baseline_edit"
                     android:drawablePadding="30dp"
                     android:ems="10"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:text="rushilmahato@gmail.com"
+                    android:text="rushilmahatho@gmail.com"
                     android:textSize="24sp" />
 
                 <TextView
@@ -107,7 +107,7 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
                     android:clickable="false"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/ubuntu"
                     android:text="Password:"
                     android:textSize="30sp" />
 
@@ -117,12 +117,11 @@
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/roundstyle"
                     android:drawableLeft="@drawable/baseline_lock_24"
                     android:drawableRight="@drawable/baseline_edit"
                     android:drawablePadding="30dp"
                     android:ems="10"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/nunito_sans"
                     android:inputType="textPassword"
                     android:padding="10dp"
                     android:text="mahato123"
@@ -135,7 +134,7 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
                     android:clickable="false"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/ubuntu"
                     android:text="Gender:"
                     android:textSize="30sp" />
 
@@ -145,28 +144,27 @@
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/roundstyle"
                     android:clickable="true"
                     android:drawableLeft="@drawable/baseline_personicon"
                     android:drawableRight="@drawable/baseline_edit"
                     android:drawablePadding="30dp"
                     android:ems="10"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:text="FEMALE"
+                    android:text="Male"
                     android:textSize="24sp" />
 
                 <Button
                     android:id="@+id/btnLogOut"
                     android:layout_width="259dp"
                     android:layout_height="62dp"
-                    android:layout_marginTop="50dp"
                     android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="50dp"
                     android:backgroundTint="@color/black"
-                    android:fontFamily="@font/londrina_solid"
+                    android:fontFamily="@font/ubuntu"
                     android:text="Logout"
-                    android:textColor="#454545"
+                    android:textColor="#C83939"
                     android:textSize="34sp" />
             </LinearLayout>
         </ScrollView>
