@@ -32,20 +32,21 @@
         android:layout_height="511dp"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="140dp"
-        app:cardCornerRadius="20dp"/>
+        app:cardCornerRadius="20dp">
 
-    <ScrollView
-        android:layout_width="398dp"
-        android:layout_height="486dp"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="150dp">
+        <ScrollView
+            android:layout_width="398dp"
+            android:layout_height="491dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="9dp">
 
-        <LinearLayout
-            android:id="@+id/linearTimesheetCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            <LinearLayout
+                android:id="@+id/linearTimesheetCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
 
 
 </FrameLayout>
