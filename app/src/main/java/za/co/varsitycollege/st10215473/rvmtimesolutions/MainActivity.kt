@@ -59,12 +59,4 @@ class MainActivity : AppCompatActivity() {
     {
         supportFragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit()
     }
-
-    fun addEventToLinear(hour: Int, minute: Int, name: String) {
-        val calendar = supportFragmentManager.findFragmentById(R.id.fragment_layout)
-        if (calendar is CalendarFragment) {
-            calendar.addEvent(hour, minute, name)
-        }
-    }
-
 }
