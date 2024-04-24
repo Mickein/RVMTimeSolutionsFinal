@@ -84,10 +84,11 @@ class DashboardFragment : Fragment() {
         barChart.setDrawValueAboveBar(true)
         barChart.description.isEnabled = false
         barChart.legend.isEnabled = false
-        barChart.setPinchZoom(false)
+        barChart.setPinchZoom(true)
         barChart.setDrawGridBackground(false)
         barChart.setTouchEnabled(false)
         barChart.animateY(1000)
+        barChart.setDrawGridBackground(false)
     }
 
     private fun setData(barChart: BarChart) {

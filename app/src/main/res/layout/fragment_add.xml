@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".AddFragment"
-    android:background="@color/black">
+    android:background="@drawable/background">
 
     <ImageView
         android:id="@+id/rvmLogo"
@@ -13,4 +14,25 @@
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="12dp"
         android:src="@drawable/rvm_logo" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="398dp"
+        android:layout_height="555dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="80dp"
+        app:cardCornerRadius="20dp">
+
+        <ScrollView
+            android:layout_width="379dp"
+            android:layout_height="533dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="9dp">
+
+            <LinearLayout
+                android:id="@+id/linearCreateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>
