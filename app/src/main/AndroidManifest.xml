@@ -24,19 +24,19 @@
         <activity
             android:name=".LoginPage"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan">            <!-- This line of code prevents keyboard from moving components -->
             <!-- Add any intent filters if necessary -->
         </activity>
         <activity
             android:name=".RegisterPage"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan">            <!-- This line of code prevents keyboard from moving components -->
             <!-- Add any intent filters if necessary -->
         </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan">            <!-- This line of code prevents keyboard from moving components -->
             <!-- Add any intent filters if necessary -->
         </activity>
         <meta-data
