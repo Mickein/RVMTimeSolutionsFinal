@@ -6,22 +6,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 
 class BeginPage : AppCompatActivity() {
-    lateinit var openLog: Button
+    lateinit var openLog: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.begin_page)
+
+        openLoginPage()
     }
 
-    fun openLoginPage(view: View?)
+    fun openLoginPage()
     {
         openLog = findViewById(R.id.txtBegin)
-        openLog.setOnClickListener{
+        openLog.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, LoginPage::class.java)
             startActivity(intent)
-        }
+        })
 
     }
 }

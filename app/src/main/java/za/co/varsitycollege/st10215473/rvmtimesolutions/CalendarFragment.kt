@@ -10,26 +10,44 @@ import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import za.co.varsitycollege.st10215473.rvmtimesolutions.CalendarAdapter.CalendarAdapter
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.CalendarEvents
 import za.co.varsitycollege.st10215473.rvmtimesolutions.R
+import za.co.varsitycollege.st10215473.rvmtimesolutions.databinding.FragmentCalendarBinding
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.zip.Inflater
 
 
 class CalendarFragment : Fragment() {
     private lateinit var calendar: CalendarView
     private lateinit var selectedDate: Date
-    private lateinit var linear: LinearLayout
+    private lateinit var linear: RecyclerView
     private lateinit var addTimeButton: ImageButton
     private lateinit var eventName: EditText
+    private lateinit var firebaseRef: DatabaseReference
+    private lateinit var calendarEventsList: ArrayList<CalendarEvents>
+    private var binding: FragmentCalendarBinding? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,9 +55,13 @@ class CalendarFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
 
-        calendar = view.findViewById(R.id.calendarView)
-        linear = view.findViewById(R.id.linearLayout)
+        val binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
+        calendar = view.findViewById(R.id.calendarView)
+
+        linear = view.findViewById(R.id.linearLayout)
+        firebaseRef = FirebaseDatabase.getInstance().getReference("CalendarEvents")
+        calendarEventsList = arrayListOf()
 
         calendar.setOnDateChangeListener { _, year, month, dayOfMonth->
             val calendar = Calendar.getInstance()
@@ -47,7 +69,12 @@ class CalendarFragment : Fragment() {
             selectedDate = calendar.time
             showAddEventDialog()
         }
-        return view
+
+        fetchData()
+
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        linear.layoutManager = linearLayoutManager
+        return view.rootView
     }
 
     private fun showAddEventDialog() {
@@ -73,13 +100,54 @@ class CalendarFragment : Fragment() {
                 .build()
             materialTimePicker.addOnPositiveButtonClickListener {
                 val eventN = eventName.text.toString()
-                addEvent(materialTimePicker.hour, materialTimePicker.minute, eventN)
+                addEventToFireBase(materialTimePicker.hour, materialTimePicker.minute, eventN)
             }
             materialTimePicker.show(parentFragmentManager, "material_time_picker")
         }
     }
 
-    fun addEvent(hour: Int, minute: Int, name: String) {
+    private fun addEventToFireBase(hour: Int, minute: Int, name: String){
+        val modifiedHour = getHourAmPm(hour)
+        val amPm = if (hour > 11) "PM" else "AM"
+        val numberFormat = DecimalFormat("00")
+
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formattedDate = sdf.format(selectedDate)
+
+        val time = "${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
+
+        val eventId = firebaseRef.push().key!!
+        val events = CalendarEvents(eventId, formattedDate, name, time)
+
+        firebaseRef.child(eventId).setValue(events)
+            .addOnCompleteListener {
+                Toast.makeText(context, "Event Added Successfully", Toast.LENGTH_SHORT).show()
+            }
+        view
+    }
+
+    private fun fetchData(){
+        firebaseRef.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                calendarEventsList.clear()
+                if(snapshot.exists()){
+                    for (calendarSnap in snapshot.children){
+                        val calendar = calendarSnap.getValue(CalendarEvents::class.java)
+                        calendarEventsList.add(calendar!!)
+                    }
+                }
+                val calendarAdapter = CalendarAdapter(calendarEventsList)
+                linear.adapter = calendarAdapter
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "error: ${error}", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
+
+    /*fun addEvent(hour: Int, minute: Int, name: String) {
         val modifiedHour = getHourAmPm(hour)
         val amPm = if (hour > 11) "PM" else "AM"
         val numberFormat = DecimalFormat("00")
@@ -93,16 +161,19 @@ class CalendarFragment : Fragment() {
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val formattedDate = sdf.format(selectedDate)
 
+        eventNameTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         eventNameTextView.text = "Event Name: $name"
 
         // Set the event date
+        eventDateTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         eventDateTextView.text = "Event Date: $formattedDate"
 
         // Set the event time
+        eventTimeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         eventTimeTextView.text = "Event Time: ${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
 
         linear.addView(cardView)
-    }
+    }*/
 
     private fun getHourAmPm(hour: Int): Int {
         var modifiedHour = if (hour > 11) hour - 12 else hour
