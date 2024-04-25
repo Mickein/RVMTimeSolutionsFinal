@@ -139,10 +139,12 @@
 
                 <Button
                     android:id="@+id/btncaptureentryADD"
-                    android:layout_width="match_parent"
+                    android:layout_width="175dp"
                     android:layout_height="45dp"
+                    android:layout_gravity="center|center_horizontal"
+                    android:backgroundTint="@color/black"
                     android:text="CAPTURE"
-                    android:textColor="@color/blue"
+                    android:textColor="#83A4B1"
                     android:textSize="20sp" />
 
                 <ImageView
