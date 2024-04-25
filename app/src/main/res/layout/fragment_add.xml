@@ -19,8 +19,8 @@
         android:layout_width="335dp"
         android:layout_height="484dp"
         android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="135dp"
-        app:cardCornerRadius="20dp">
+        android:layout_marginTop="91dp"
+        app:cardCornerRadius="25dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -54,8 +54,8 @@
                     android:layout_marginTop="-105dp"
                     android:fontFamily="@font/farro_bold"
                     android:hint="Project Name"
-                    android:textSize="28sp"
-                    android:textColorHint="#504B4B"/>
+                    android:textColorHint="#777171"
+                    android:textSize="28sp" />
 
                 <EditText
                     android:id="@+id/txtclientNameAdd"
@@ -68,8 +68,8 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Client Name"
                     android:paddingLeft="10dp"
-                    android:textSize="24sp"
-                    android:textColorHint="#504B4B"/>
+                    android:textColorHint="#777171"
+                    android:textSize="24sp" />
 
                 <EditText
                     android:id="@+id/edtdateAdd"
@@ -82,7 +82,7 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Enter Date of Entry "
                     android:inputType="date"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtcreateCategoryAdd"
@@ -95,7 +95,7 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Create Category"
                     android:inputType="text"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtDescription"
@@ -107,9 +107,9 @@
                     android:ems="10"
                     android:fontFamily="@font/ubuntu"
                     android:gravity="start|top"
-                    android:hint="Enter a Description"
+                    android:hint="Enter a Description for th"
                     android:inputType="textMultiLine"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtmingoalhourAdd"
@@ -122,7 +122,7 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Choose a min. hour goal(4)"
                     android:inputType="time"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtmaxgoalhourADD"
@@ -135,29 +135,28 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Choose a max. hour goal(4)"
                     android:inputType="time"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <Button
                     android:id="@+id/btncaptureentryADD"
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_width="195dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center|center_horizontal"
+                    android:backgroundTint="@color/black"
                     android:text="CAPTURE"
-                    android:textColor="@color/blue"
-                    android:textSize="24sp" />
+                    android:textColor="#83A4B1"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/profileimage_circle" />
 
 
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/txtheadinADD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="84dp"
-        android:fontFamily="@font/ubuntu"
-        android:text="Time Entry"
-        android:textColor="@color/white"
-        android:textSize="34sp" />
 </FrameLayout>

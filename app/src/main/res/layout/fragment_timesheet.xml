@@ -28,15 +28,15 @@
         android:textColorHint="#F6F5F5"/>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="411dp"
-        android:layout_height="511dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="140dp"
         app:cardCornerRadius="20dp">
 
         <ScrollView
-            android:layout_width="398dp"
-            android:layout_height="491dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
             android:layout_marginTop="9dp">
 
