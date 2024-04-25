@@ -16,23 +16,154 @@
         android:src="@drawable/rvm_logo" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="398dp"
-        android:layout_height="555dp"
+        android:layout_width="335dp"
+        android:layout_height="484dp"
         android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="135dp"
         app:cardCornerRadius="20dp">
 
         <ScrollView
-            android:layout_width="379dp"
-            android:layout_height="533dp"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="9dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginTop="0dp">
 
             <LinearLayout
                 android:id="@+id/linearCreateLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="115dp"
+                    android:layout_height="115dp"
+                    android:layout_marginRight="95dp"
+                    android:background="@drawable/gradient_timesheet_entry"
+                    android:fadingEdge="horizontal|vertical"
+                    android:fadingEdgeLength="10dp"
+                    android:requiresFadingEdge="horizontal|vertical"
+                    android:src="@drawable/baseline_image_24" />
+
+                <EditText
+                    android:id="@+id/edtprojectnameAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginLeft="125dp"
+                    android:layout_marginTop="-105dp"
+                    android:fontFamily="@font/farro_bold"
+                    android:hint="Project Name"
+                    android:textSize="28sp"
+                    android:textColorHint="#504B4B"/>
+
+                <EditText
+                    android:id="@+id/txtclientNameAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="125dp"
+                    android:layout_marginTop="-5dp"
+                    android:drawableLeft="@drawable/baseline_personicon"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Client Name"
+                    android:paddingLeft="10dp"
+                    android:textSize="24sp"
+                    android:textColorHint="#504B4B"/>
+
+                <EditText
+                    android:id="@+id/edtdateAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:drawableLeft="@drawable/baseline_date_range_24"
+                    android:drawablePadding="20dp"
+                    android:ems="10"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Enter Date of Entry "
+                    android:inputType="date"
+                    android:textColorHint="#504B4B" />
+
+                <EditText
+                    android:id="@+id/edtcreateCategoryAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/baseline_category"
+                    android:drawablePadding="20dp"
+                    android:ems="10"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Create Category"
+                    android:inputType="text"
+                    android:textColorHint="#504B4B" />
+
+                <EditText
+                    android:id="@+id/edtDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/baseline_description_24"
+                    android:drawablePadding="20dp"
+                    android:ems="10"
+                    android:fontFamily="@font/ubuntu"
+                    android:gravity="start|top"
+                    android:hint="Enter a Description for th"
+                    android:inputType="textMultiLine"
+                    android:textColorHint="#504B4B" />
+
+                <EditText
+                    android:id="@+id/edtmingoalhourAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/baseline_diamond_24"
+                    android:drawablePadding="20dp"
+                    android:ems="10"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Choose a min. hour goal(4)"
+                    android:inputType="time"
+                    android:textColorHint="#504B4B" />
+
+                <EditText
+                    android:id="@+id/edtmaxgoalhourADD"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/baseline_diamond_24"
+                    android:drawablePadding="20dp"
+                    android:ems="10"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Choose a max. hour goal(4)"
+                    android:inputType="time"
+                    android:textColorHint="#504B4B" />
+
+                <Button
+                    android:id="@+id/btncaptureentryADD"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:text="CAPTURE"
+                    android:textColor="@color/blue"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/profileimage_circle" />
+
+
+            </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/txtheadinADD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="84dp"
+        android:fontFamily="@font/ubuntu"
+        android:text="Time Entry"
+        android:textColor="@color/blue"
+        android:textSize="34sp" />
 </FrameLayout>
