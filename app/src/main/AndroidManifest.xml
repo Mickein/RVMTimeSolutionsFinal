@@ -23,12 +23,14 @@
         </activity>
         <activity
             android:name=".LoginPage"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <!-- Add any intent filters if necessary -->
         </activity>
         <activity
             android:name=".RegisterPage"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <!-- Add any intent filters if necessary -->
         </activity>
         <activity

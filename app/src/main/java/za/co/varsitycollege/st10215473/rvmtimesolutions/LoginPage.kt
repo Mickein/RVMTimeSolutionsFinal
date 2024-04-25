@@ -13,19 +13,25 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 
 class LoginPage : AppCompatActivity() {
+    //variable for going to dashboard page if user has a registered account
     lateinit var openDash: TextView
+    //variables for firebase authentication
     private lateinit var auth: FirebaseAuth
     private lateinit var passwordEdit: EditText
     private lateinit var loginemail: EditText
+    //variable for going to register page if user doesnt have an account
+    private lateinit var goToReg: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
 
+        //Firebase Authentication
         passwordEdit = findViewById(R.id.edtLoginPassword)
         loginemail = findViewById(R.id.edtLoginEmail)
         openDash = findViewById(R.id.txtLogin)
         auth = Firebase.auth
 
+        //Open Dashboard Page
         openDash.setOnClickListener()
         {
             val email = loginemail.text.toString()
@@ -33,6 +39,8 @@ class LoginPage : AppCompatActivity() {
             LoginUser(email, password)
         }
 
+        //Open Register Page
+        openRegPage()
 
     }
 
@@ -64,4 +72,13 @@ class LoginPage : AppCompatActivity() {
                 }
             }
     }
+
+    fun openRegPage()
+    {
+        goToReg = findViewById(R.id.txtGoToRegisterPage)
+        goToReg.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, RegisterPage::class.java)
+            startActivity(intent)
+        })
+}
 }

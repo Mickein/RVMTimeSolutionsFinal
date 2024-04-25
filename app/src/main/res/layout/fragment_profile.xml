@@ -70,7 +70,6 @@
                     android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:text="Mahatho"
                     android:textSize="20sp" />
 
                 <TextView
@@ -99,7 +98,6 @@
                     android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:text="rushilmahatho@gmail.com"
                     android:textSize="20sp" />
 
                 <TextView
@@ -127,7 +125,6 @@
                     android:fontFamily="@font/nunito_sans"
                     android:inputType="textPassword"
                     android:padding="10dp"
-                    android:text="mahato123"
                     android:textSize="20sp" />
 
                 <TextView
@@ -156,7 +153,6 @@
                     android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:text="Male"
                     android:textSize="20sp" />
 
                 <Button
