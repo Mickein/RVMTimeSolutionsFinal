@@ -8,14 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -25,17 +19,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 import za.co.varsitycollege.st10215473.rvmtimesolutions.CalendarAdapter.CalendarAdapter
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.CalendarEvents
-import za.co.varsitycollege.st10215473.rvmtimesolutions.R
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
 import za.co.varsitycollege.st10215473.rvmtimesolutions.databinding.FragmentCalendarBinding
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.zip.Inflater
 
 
 class CalendarFragment : Fragment() {
@@ -74,7 +66,8 @@ class CalendarFragment : Fragment() {
 
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         linear.layoutManager = linearLayoutManager
-        return view.rootView
+
+        return view
     }
 
     private fun showAddEventDialog() {
@@ -86,8 +79,6 @@ class CalendarFragment : Fragment() {
 
         addTimeButton = eventForm.findViewById(R.id.btnAddTime)
         eventName = eventForm.findViewById(R.id.edtEventName)
-
-        eventName.error = "Write Event Name"
 
         addTimeButton.setOnClickListener {
             dialog.hide()
@@ -118,6 +109,8 @@ class CalendarFragment : Fragment() {
 
         val time = "${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
 
+        if(name.isEmpty()) eventName.error = "Add a project name"
+
         val eventId = firebaseRef.push().key!!
         val events = CalendarEvents(eventId, formattedDate, name, time)
 
@@ -139,6 +132,8 @@ class CalendarFragment : Fragment() {
                     }
                 }
                 val calendarAdapter = CalendarAdapter(calendarEventsList)
+                val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
+                linear.addItemDecoration(SpacesItemDecoration(spacingInPixels))
                 linear.adapter = calendarAdapter
             }
 
