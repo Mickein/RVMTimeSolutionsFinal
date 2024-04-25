@@ -28,15 +28,15 @@
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_width="350dp"
+        android:layout_height="400dp"
         android:layout_gravity="top|center"
         android:layout_marginTop="220dp"
         app:cardCornerRadius="30dp">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="447dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,18 +45,19 @@
 
                 <TextView
                     android:id="@+id/txtSurname"
-                    android:layout_width="373dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="20dp"
                     android:clickable="false"
                     android:fontFamily="@font/ubuntu"
+                    android:paddingLeft="20sp"
                     android:text="Surname:"
-                    android:textSize="30sp" />
+                    android:textSize="25sp" />
 
                 <EditText
                     android:id="@+id/edtSurname"
-                    android:layout_width="373dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
@@ -69,23 +70,23 @@
                     android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:text="Mahatho"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/txtEmail"
-                    android:layout_width="373dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
                     android:clickable="false"
                     android:fontFamily="@font/ubuntu"
                     android:text="Email:"
-                    android:textSize="30sp" />
+                    android:paddingLeft="20sp"
+                    android:textSize="25sp" />
 
                 <EditText
                     android:id="@+id/edtEmail"
-                    android:layout_width="373dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
@@ -97,23 +98,23 @@
                     android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:text="rushilmahatho@gmail.com"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/txtPassword"
-                    android:layout_width="373dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
                     android:clickable="false"
                     android:fontFamily="@font/ubuntu"
                     android:text="Password:"
-                    android:textSize="30sp" />
+                    android:paddingLeft="20sp"
+                    android:textSize="25sp" />
 
                 <EditText
                     android:id="@+id/edtPassword"
-                    android:layout_width="373dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
@@ -124,23 +125,23 @@
                     android:fontFamily="@font/nunito_sans"
                     android:inputType="textPassword"
                     android:padding="10dp"
-                    android:text="mahato123"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/txtGender"
-                    android:layout_width="373dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
                     android:clickable="false"
                     android:fontFamily="@font/ubuntu"
                     android:text="Gender:"
-                    android:textSize="30sp" />
+                    android:paddingLeft="20sp"
+                    android:textSize="25sp" />
 
                 <EditText
                     android:id="@+id/edtGender"
-                    android:layout_width="373dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="10dp"
@@ -152,8 +153,7 @@
                     android:fontFamily="@font/nunito_sans"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:text="Male"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnLogOut"
