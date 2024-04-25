@@ -87,6 +87,8 @@ class CalendarFragment : Fragment() {
         addTimeButton = eventForm.findViewById(R.id.btnAddTime)
         eventName = eventForm.findViewById(R.id.edtEventName)
 
+        eventName.error = "Write Event Name"
+
         addTimeButton.setOnClickListener {
             dialog.hide()
             val currentTime = Calendar.getInstance()
