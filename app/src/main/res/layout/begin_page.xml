@@ -95,6 +95,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="20dp"
+        android:clickable="true"
         android:fontFamily="@font/nunito_sans"
         android:gravity="center"
         android:text="BEGIN"
@@ -104,7 +105,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView12"
         app:layout_constraintTop_toBottomOf="@+id/imageView9"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:focusable="true" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
