@@ -18,7 +18,7 @@
 
     <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="355dp"
+        android:layout_width="340dp"
         android:layout_height="328dp"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="75dp"
@@ -30,9 +30,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="180dp"
+        android:layout_height="255dp"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="100dp"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
