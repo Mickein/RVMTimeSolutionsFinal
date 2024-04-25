@@ -12,6 +12,7 @@
         app:cardBackgroundColor="@color/blue"
         app:cardCornerRadius="30dp"
         app:cardUseCompatPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,8 +24,8 @@
 
             <TextView
                 android:id="@+id/exame_name_txt"
-                android:layout_width="207dp"
-                android:layout_height="40dp"
+                android:layout_width="324dp"
+                android:layout_height="45dp"
                 android:text="Event Name : "
                 android:textAllCaps="false"
                 android:textColor="#094A7E"
