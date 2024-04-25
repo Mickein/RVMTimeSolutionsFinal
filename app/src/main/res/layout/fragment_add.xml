@@ -72,20 +72,6 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/edtdateAdd"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:clickable="true"
-                    android:drawableLeft="@drawable/baseline_date_range_24"
-                    android:drawablePadding="20dp"
-                    android:ems="10"
-                    android:fontFamily="@font/ubuntu"
-                    android:hint="Enter Date of Entry "
-                    android:inputType="date"
-                    android:textColorHint="#504B4B" />
-
-                <EditText
                     android:id="@+id/edtcreateCategoryAdd"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
