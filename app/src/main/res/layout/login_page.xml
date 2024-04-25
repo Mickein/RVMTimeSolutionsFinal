@@ -59,7 +59,7 @@
             app:srcCompat="@drawable/loginbutton_bg" />
 
         <TextView
-            android:id="@+id/txtBegin"
+            android:id="@+id/txtLogin"
             android:layout_width="137dp"
             android:layout_height="54dp"
             android:layout_gravity="top|center_horizontal"

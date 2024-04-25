@@ -80,7 +80,7 @@
                     android:layout_width="350dp"
                     android:layout_height="50dp"
                     android:layout_gravity="top|center_horizontal"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:clickable="true"
                     android:drawableLeft="@drawable/profile_placeholder"
                     android:drawablePadding="20dp"
@@ -93,7 +93,7 @@
                     android:id="@+id/edtRegisterSurname"
                     android:layout_width="350dp"
                     android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="25dp"
                     android:clickable="true"
                     android:layout_gravity="top|center_horizontal"
                     android:drawableLeft="@drawable/profile_placeholder"
@@ -107,7 +107,7 @@
                     android:id="@+id/edtRegisterEmail"
                     android:layout_width="350dp"
                     android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="25dp"
                     android:clickable="true"
                     android:layout_gravity="top|center_horizontal"
                     android:drawableLeft="@drawable/baseline_email"
@@ -121,7 +121,7 @@
                     android:id="@+id/edtRegisterPassword"
                     android:layout_width="350dp"
                     android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="25dp"
                     android:clickable="true"
                     android:layout_gravity="top|center_horizontal"
                     android:drawableLeft="@drawable/baseline_lock_24"
@@ -135,7 +135,7 @@
                     android:id="@+id/edtRegisterConfirmPassword"
                     android:layout_width="350dp"
                     android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="25dp"
                     android:clickable="true"
                     android:layout_gravity="top|center_horizontal"
                     android:drawableLeft="@drawable/baseline_lock_24"
@@ -145,19 +145,6 @@
                     android:inputType="text"
                     android:paddingLeft="20dp" />
 
-                <EditText
-                    android:id="@+id/edtRegisterGender"
-                    android:layout_width="350dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
-                    android:clickable="true"
-                    android:layout_gravity="top|center_horizontal"
-                    android:drawableLeft="@drawable/baseline_lock_24"
-                    android:drawablePadding="20dp"
-                    android:ems="10"
-                    android:hint="Enter Gender"
-                    android:inputType="text"
-                    android:paddingLeft="20dp" />
 
 
             </LinearLayout>
@@ -177,7 +164,7 @@
         app:srcCompat="@drawable/loginbutton_bg" />
 
     <TextView
-        android:id="@+id/txtBegin"
+        android:id="@+id/txtRegister"
         android:layout_width="137dp"
         android:layout_height="54dp"
         android:layout_gravity="top|center_horizontal"
