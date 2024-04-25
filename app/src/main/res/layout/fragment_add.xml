@@ -54,7 +54,7 @@
                     android:layout_marginTop="-105dp"
                     android:fontFamily="@font/farro_bold"
                     android:hint="Project Name"
-                    android:textColorHint="#504B4B"
+                    android:textColorHint="#777171"
                     android:textSize="28sp" />
 
                 <EditText
@@ -68,7 +68,7 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Client Name"
                     android:paddingLeft="10dp"
-                    android:textColorHint="#504B4B"
+                    android:textColorHint="#777171"
                     android:textSize="24sp" />
 
                 <EditText
@@ -82,7 +82,7 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Enter Date of Entry "
                     android:inputType="date"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtcreateCategoryAdd"
@@ -95,7 +95,7 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Create Category"
                     android:inputType="text"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtDescription"
@@ -109,7 +109,7 @@
                     android:gravity="start|top"
                     android:hint="Enter a Description for th"
                     android:inputType="textMultiLine"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtmingoalhourAdd"
@@ -122,7 +122,7 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Choose a min. hour goal(4)"
                     android:inputType="time"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtmaxgoalhourADD"
@@ -135,12 +135,13 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Choose a max. hour goal(4)"
                     android:inputType="time"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <Button
                     android:id="@+id/btncaptureentryADD"
-                    android:layout_width="175dp"
+                    android:layout_width="195dp"
                     android:layout_height="45dp"
+                    android:layout_marginTop="15dp"
                     android:layout_gravity="center|center_horizontal"
                     android:backgroundTint="@color/black"
                     android:text="CAPTURE"
