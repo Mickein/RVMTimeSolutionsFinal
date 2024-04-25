@@ -19,8 +19,8 @@
         android:layout_width="335dp"
         android:layout_height="484dp"
         android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="135dp"
-        app:cardCornerRadius="20dp">
+        android:layout_marginTop="91dp"
+        app:cardCornerRadius="25dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -54,8 +54,8 @@
                     android:layout_marginTop="-105dp"
                     android:fontFamily="@font/farro_bold"
                     android:hint="Project Name"
-                    android:textSize="28sp"
-                    android:textColorHint="#504B4B"/>
+                    android:textColorHint="#504B4B"
+                    android:textSize="28sp" />
 
                 <EditText
                     android:id="@+id/txtclientNameAdd"
@@ -68,8 +68,8 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Client Name"
                     android:paddingLeft="10dp"
-                    android:textSize="24sp"
-                    android:textColorHint="#504B4B"/>
+                    android:textColorHint="#504B4B"
+                    android:textSize="24sp" />
 
                 <EditText
                     android:id="@+id/edtdateAdd"
@@ -140,10 +140,10 @@
                 <Button
                     android:id="@+id/btncaptureentryADD"
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="45dp"
                     android:text="CAPTURE"
                     android:textColor="@color/blue"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -156,14 +156,4 @@
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/txtheadinADD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="84dp"
-        android:fontFamily="@font/ubuntu"
-        android:text="Time Entry"
-        android:textColor="@color/blue"
-        android:textSize="34sp" />
 </FrameLayout>
