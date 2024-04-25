@@ -54,7 +54,7 @@
                     android:layout_marginTop="-105dp"
                     android:fontFamily="@font/farro_bold"
                     android:hint="Project Name"
-                    android:textColorHint="#504B4B"
+                    android:textColorHint="#777171"
                     android:textSize="28sp" />
 
                 <EditText
@@ -68,24 +68,46 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Client Name"
                     android:paddingLeft="10dp"
-                    android:textColorHint="#504B4B"
+                    android:textColorHint="#777171"
                     android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Select a Date for this Entry" />
+
+                <Button
+                    android:id="@+id/btnDatePicker"
+                    android:layout_width="195dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center|center_horizontal"
+                    android:backgroundTint="@color/black"
+                    android:text="APR 25 2024"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    style="?android:spinnerStyle"
+                    android:onClick="openDatePicker"
+                />
 
                 <EditText
                     android:id="@+id/edtcreateCategoryAdd"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:drawableLeft="@drawable/baseline_category"
                     android:drawablePadding="20dp"
                     android:ems="10"
                     android:fontFamily="@font/ubuntu"
                     android:hint="Create Category"
                     android:inputType="text"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
-                    android:id="@+id/edtDescriptionAdd"
+                    android:id="@+id/edtDescription"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="15dp"
@@ -94,9 +116,51 @@
                     android:ems="10"
                     android:fontFamily="@font/ubuntu"
                     android:gravity="start|top"
-                    android:hint="Enter a Description for th"
+                    android:hint="Enter the entry Description"
                     android:inputType="textMultiLine"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
+                <TextView
+                    android:id="@+id/txtStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Select a Start Time for this Entry" />
+
+                <Button
+                    android:id="@+id/btnStartTimePicker"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center|center_horizontal"
+                    android:backgroundTint="@color/black"
+                    android:text="12 : 12"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    style="?android:spinnerStyle"
+                    android:onClick="openTimePicker"
+                    />
+                <TextView
+                    android:id="@+id/txtEndTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="Select an End Time for this Entry" />
+
+                <Button
+                    android:id="@+id/btnEndTimePicker"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center|center_horizontal"
+                    android:backgroundTint="@color/black"
+                    android:text="12: 12"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    style="?android:spinnerStyle"
+                    android:onClick="openTimePicker"
+                    />
 
                 <EditText
                     android:id="@+id/edtmingoalhourAdd"
@@ -109,7 +173,7 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Choose a min. hour goal(4)"
                     android:inputType="time"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <EditText
                     android:id="@+id/edtmaxgoalhourADD"
@@ -122,23 +186,18 @@
                     android:fontFamily="@font/ubuntu"
                     android:hint="Choose a max. hour goal(4)"
                     android:inputType="time"
-                    android:textColorHint="#504B4B" />
+                    android:textColorHint="#777171" />
 
                 <Button
                     android:id="@+id/btncaptureentryADD"
-                    android:layout_width="175dp"
+                    android:layout_width="195dp"
                     android:layout_height="45dp"
+                    android:layout_marginTop="15dp"
                     android:layout_gravity="center|center_horizontal"
                     android:backgroundTint="@color/black"
                     android:text="CAPTURE"
                     android:textColor="#83A4B1"
                     android:textSize="20sp" />
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/profileimage_circle" />
 
 
             </LinearLayout>
