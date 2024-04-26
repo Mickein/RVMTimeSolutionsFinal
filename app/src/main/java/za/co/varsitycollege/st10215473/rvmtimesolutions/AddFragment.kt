@@ -49,7 +49,7 @@ class AddFragment : Fragment() {
         descriptionText = view.findViewById(R.id.edtDescriptionAdd)
         minGoalText = view.findViewById(R.id.edtmingoalhourAdd)
         maxGoalText = view.findViewById(R.id.edtmaxgoalhourADD)
-        dateText = view.findViewById(R.id.edtdateAdd)
+
 
         firebaseRef = FirebaseDatabase.getInstance().getReference("Timesheets")
         timesheetsList = arrayListOf()
