@@ -31,23 +31,14 @@ class LoginPage : AppCompatActivity() {
         openDash = findViewById(R.id.txtLogin)
         auth = Firebase.auth
 
-        //Open Dashboard Page
-        openDash.setOnClickListener()
-        {
-            val email = loginemail.text.toString()
-            val password = passwordEdit.text.toString()
-            LoginUser(email, password)
-        }
-
         //Open Register Page
         openRegPage()
-
     }
 
     fun openDashboardPage()
     {
         openDash = findViewById(R.id.txtLogin)
-    openDash.setOnClickListener(View.OnClickListener {
+        openDash.setOnClickListener(View.OnClickListener {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     })

@@ -5,7 +5,8 @@ data class CalendarEvents(
     val eventDate: String? = null,
     val eventName: String? = null,
     val eventTime: String? = null,
-    val projectName: String? = null
+    val projectName: String? = null,
+    val userId:String? = null
 ){
-    constructor() : this("", "", "", "")
+    constructor() : this("", "", "", "", "", "")
 }

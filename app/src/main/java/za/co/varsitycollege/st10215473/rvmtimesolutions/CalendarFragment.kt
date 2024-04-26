@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -111,8 +112,11 @@ class CalendarFragment : Fragment() {
 
         if(name.isEmpty()) eventName.error = "Add a project name"
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+
         val eventId = firebaseRef.push().key!!
-        val events = CalendarEvents(eventId, formattedDate, name, time)
+        val events = CalendarEvents(eventId, formattedDate, name, time, "", uid)
 
         firebaseRef.child(eventId).setValue(events)
             .addOnCompleteListener {

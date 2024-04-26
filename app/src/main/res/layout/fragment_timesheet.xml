@@ -29,23 +29,15 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="559dp"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="140dp"
         app:cardCornerRadius="20dp">
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTimesheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="9dp">
-
-            <LinearLayout
-                android:id="@+id/linearTimesheetCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+            android:layout_height="match_parent"/>
     </androidx.cardview.widget.CardView>
 
 

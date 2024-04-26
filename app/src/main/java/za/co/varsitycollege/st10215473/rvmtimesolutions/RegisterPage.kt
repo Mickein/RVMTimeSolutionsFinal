@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
 
 class RegisterPage : AppCompatActivity() {
     //variable for going back to Login page if user has an existing account
@@ -22,6 +23,7 @@ class RegisterPage : AppCompatActivity() {
     private lateinit var surname: EditText
     private lateinit var registerButton: TextView
     private lateinit var authReg: FirebaseAuth
+    private lateinit var firebaseRef: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_page)
@@ -37,8 +39,8 @@ class RegisterPage : AppCompatActivity() {
         authReg = Firebase.auth
         registerButton.setOnClickListener()
         {
-            var email = emailEdit.text.toString()
-            var password = passwordEdit.text.toString()
+            val email = emailEdit.text.toString()
+            val password = passwordEdit.text.toString()
             RegisterUser(email, password)
         }
     }
@@ -49,7 +51,7 @@ class RegisterPage : AppCompatActivity() {
             val intent = Intent(this, LoginPage::class.java)
             startActivity(intent)
         })
-
+6
     }
 
     private fun RegisterUser(email: String, password: String) {
