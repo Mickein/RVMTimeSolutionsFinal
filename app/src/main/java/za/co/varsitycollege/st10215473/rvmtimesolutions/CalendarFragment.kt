@@ -110,7 +110,10 @@ class CalendarFragment : Fragment() {
 
         val time = "${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
 
-        if(name.isEmpty()) eventName.error = "Add a project name"
+        if(name.isEmpty()){
+            eventName.error = "Add a project name"
+            return
+        }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         val uid = currentUser?.uid

@@ -1,16 +1,23 @@
 package za.co.varsitycollege.st10215473.rvmtimesolutions
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -19,6 +26,7 @@ import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+
 
 
 class AddFragment : Fragment() {
@@ -33,12 +41,14 @@ class AddFragment : Fragment() {
     private lateinit var captureTimesheetButton: Button
     private lateinit var projectNameText: EditText
     private lateinit var clientNameText: EditText
-
+    private lateinit var addImage: ImageView
+    private var uri: Uri? = null
 
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var dateButton: Button
     private lateinit var startTimeButton: Button
     private lateinit var endTimeButton: Button
+    private var addedAnImage: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,10 +60,33 @@ class AddFragment : Fragment() {
         dateButton = view.findViewById(R.id.btnDatePicker)
         startTimeButton = view.findViewById(R.id.btnStartTimePicker)
         endTimeButton = view.findViewById(R.id.btnEndTimePicker)
+        captureTimesheetButton = view.findViewById(R.id.btncaptureentryADD)
+        projectNameText = view.findViewById(R.id.edtprojectnameAdd)
+        clientNameText = view.findViewById(R.id.txtclientNameAdd)
+        categoryText = view.findViewById(R.id.edtcreateCategoryAdd)
+        descriptionText = view.findViewById(R.id.edtDescription)
+        minGoalText = view.findViewById(R.id.edtmingoalhourAdd)
+        maxGoalText = view.findViewById(R.id.edtmaxgoalhourADD)
+        addImage = view.findViewById(R.id.imageView8)
+        firebaseRef = FirebaseDatabase.getInstance().getReference("Timesheets")
+        timesheetsList = arrayListOf()
+        storageRef = FirebaseStorage.getInstance().getReference("images")
 
         dateButton.text = getTodaysDate()
         startTimeButton.text = getCurrentTime()
         endTimeButton.text = getCurrentTime()
+
+        val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()){
+            addImage.setImageURI(it)
+            if(it != null){
+                uri = it
+            }
+        }
+
+        addImage.setOnClickListener{
+            addedAnImage = true
+            pickImage.launch("image/*")
+        }
 
         dateButton.setOnClickListener {
             openDatePicker(it)
@@ -64,46 +97,12 @@ class AddFragment : Fragment() {
         endTimeButton.setOnClickListener {
             openTimePicker(it, false)
         }
-        return view
-
-        captureTimesheetButton = view.findViewById(R.id.btncaptureentryADD)
-        projectNameText = view.findViewById(R.id.edtprojectnameAdd)
-        clientNameText = view.findViewById(R.id.txtclientNameAdd)
-        categoryText = view.findViewById(R.id.edtcreateCategoryAdd)
-        descriptionText = view.findViewById(R.id.edtDescription)
-        minGoalText = view.findViewById(R.id.edtmingoalhourAdd)
-        maxGoalText = view.findViewById(R.id.edtmaxgoalhourADD)
-
-        firebaseRef = FirebaseDatabase.getInstance().getReference("Timesheets")
-        timesheetsList = arrayListOf()
-        storageRef = FirebaseStorage.getInstance().getReference("images")
-
-        val calendar = Calendar.getInstance()
-
-        val datePicker = DatePickerDialog.OnDateSetListener{ view, year, month, dayofMonth ->
-            calendar.set(Calendar.YEAR, year)
-            calendar.set(Calendar.MONTH, month)
-            calendar.set(Calendar.DAY_OF_MONTH, dayofMonth)
-            dateToText(calendar)
+        captureTimesheetButton.setOnClickListener{
+            captureTimesheet()
         }
-
-        dateText.setOnClickListener {
-            DatePickerDialog(
-                requireContext(),
-                datePicker,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH))
-                .show()
-        }
-
-        captureTimesheetButton.setOnClickListener(){
-
-        }
-
-
         return view
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDatePicker() // Initialize the date picker after the view is created
@@ -114,22 +113,74 @@ class AddFragment : Fragment() {
         dateText.setText(sdf.format(calendar.time))
     }
     fun captureTimesheet(){
+        val currentUser = FirebaseAuth.getInstance().currentUser
         val name = projectNameText.text.toString()
         val category = categoryText.text.toString()
         val description = descriptionText.text.toString()
         val minGoal = minGoalText.text.toString()
+        val minHour = minGoal.toInt()
         val maxGoal = maxGoalText.text.toString()
+        val maxHour = maxGoal.toInt()
         val client = clientNameText.text.toString()
         val date = dateText.text.toString()
+        val startTime = startTimeButton.text.toString()
+        val endTime = endTimeButton.text.toString()
 
-        val eventId = firebaseRef.push().key!!
-        val events = Timesheets(eventId, name, date)
+        if(name.isEmpty()){
+            projectNameText.error = "Add a Project Name"
+            return
+        }
+        if(category.isEmpty()) {
+            categoryText.error = "Add a Category"
+            return
+        }
+        if(description.isEmpty()) {
+            descriptionText.error = "Add a Description"
+            return
+        }
+        if(minGoal.isEmpty()) {
+            minGoalText.error = "Add a minimum hour goal"
+            return
+        }
+        if(maxGoal.isEmpty()) {
+            maxGoalText.error = "Add a maximum hour goal"
+            return
+        }
+        if(client.isEmpty()) {
+            clientNameText.error = "Add a client name"
+            return
+        }
 
-        firebaseRef.child(eventId).setValue(events)
-            .addOnCompleteListener {
-                Toast.makeText(context, "Event Added Successfully", Toast.LENGTH_SHORT).show()
+        val timesheetId = firebaseRef.push().key!!
+        var timesheets: Timesheets
+
+        val uid = currentUser?.uid
+
+        if(addedAnImage){
+            uri?.let {
+                storageRef.child(timesheetId).putFile(it)
+                    .addOnSuccessListener {task->
+                        task.metadata!!.reference!!.downloadUrl
+                            .addOnSuccessListener {url ->
+                                val imgUrl = url.toString()
+                                timesheets = Timesheets(timesheetId, name, date, startTime, endTime, category, description, minHour, maxHour, imgUrl, client, uid)
+                                firebaseRef.child(timesheetId).setValue(timesheets)
+                                    .addOnCompleteListener {
+                                        Toast.makeText(context, "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
+                                    }
+                                view
+                            }
+                    }
             }
-        view
+        }
+        else{
+            timesheets = Timesheets(timesheetId, name, date, startTime, endTime, category, description, minHour, maxHour, "", client, uid)
+            firebaseRef.child(timesheetId).setValue(timesheets)
+                .addOnCompleteListener {
+                    Toast.makeText(context, "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
+                }
+            view
+        }
     }
 
     private fun getTodaysDate(): String {
@@ -203,4 +254,4 @@ class AddFragment : Fragment() {
         datePickerDialog.show()
     }
 
-    }
+}

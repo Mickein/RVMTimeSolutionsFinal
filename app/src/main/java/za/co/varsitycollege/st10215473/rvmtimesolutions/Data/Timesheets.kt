@@ -11,7 +11,8 @@ data class Timesheets(
     val minHourGoal: Int? = null,
     val maxHourGoal: Int? = null,
     val image: String? = null,
-    val clientName: String? = null
+    val clientName: String? = null,
+    val userId: String? = null
 ){
-    constructor() : this("", "", "", "", "", "", "", 0, 0, "", "")
+    constructor() : this("", "", "", "", "", "", "", 0, 0, "", "", "")
 }
