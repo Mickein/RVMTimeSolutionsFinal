@@ -107,11 +107,6 @@ class AddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initDatePicker() // Initialize the date picker after the view is created
     }
-    fun dateToText(calendar: Calendar){
-        val format = "dd-MM-yyyy"
-        val sdf = SimpleDateFormat(format, Locale.UK)
-        dateText.setText(sdf.format(calendar.time))
-    }
     fun captureTimesheet(){
         val currentUser = FirebaseAuth.getInstance().currentUser
         val name = projectNameText.text.toString()
@@ -122,7 +117,7 @@ class AddFragment : Fragment() {
         val maxGoal = maxGoalText.text.toString()
         val maxHour = maxGoal.toInt()
         val client = clientNameText.text.toString()
-        val date = dateText.text.toString()
+        val date = dateButton.text.toString()
         val startTime = startTimeButton.text.toString()
         val endTime = endTimeButton.text.toString()
 
@@ -156,7 +151,7 @@ class AddFragment : Fragment() {
 
         val uid = currentUser?.uid
 
-        if(addedAnImage){
+        if(addedAnImage == true){
             uri?.let {
                 storageRef.child(timesheetId).putFile(it)
                     .addOnSuccessListener {task->
@@ -167,6 +162,16 @@ class AddFragment : Fragment() {
                                 firebaseRef.child(timesheetId).setValue(timesheets)
                                     .addOnCompleteListener {
                                         Toast.makeText(context, "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
+
+                                        projectNameText.setText("")
+                                        categoryText.setText("")
+                                        descriptionText.setText("")
+                                        minGoalText.setText("")
+                                        maxGoalText.setText("")
+                                        clientNameText.setText("")
+                                        dateButton.text = getTodaysDate()
+                                        startTimeButton.text = getCurrentTime()
+                                        endTimeButton.text = getCurrentTime()
                                     }
                                 view
                             }
@@ -177,7 +182,7 @@ class AddFragment : Fragment() {
             timesheets = Timesheets(timesheetId, name, date, startTime, endTime, category, description, minHour, maxHour, "", client, uid)
             firebaseRef.child(timesheetId).setValue(timesheets)
                 .addOnCompleteListener {
-                    Toast.makeText(context, "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Timesheet Captured Failed", Toast.LENGTH_SHORT).show()
                 }
             view
         }

@@ -7,8 +7,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="335dp"
-        android:layout_height="125dp"
+        android:layout_width="337dp"
+        android:layout_height="92dp"
         app:cardBackgroundColor="#384043"
         app:cardCornerRadius="30dp"
         app:cardUseCompatPadding="false"
@@ -34,10 +34,10 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/event_time_txt"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.161"
+                app:layout_constraintHorizontal_bias="0.235"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.402" />
+                app:layout_constraintVertical_bias="0.133" />
 
             <TextView
                 android:id="@+id/event_date_txt"
@@ -73,10 +73,10 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.949"
+                app:layout_constraintHorizontal_bias="0.947"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.063"
+                app:layout_constraintVertical_bias="0.065"
                 app:srcCompat="@drawable/delete_bin" />
 
             <ImageView
@@ -86,10 +86,10 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.957"
+                app:layout_constraintHorizontal_bias="0.956"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.494"
+                app:layout_constraintVertical_bias="0.718"
                 app:srcCompat="@drawable/pencil_edit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

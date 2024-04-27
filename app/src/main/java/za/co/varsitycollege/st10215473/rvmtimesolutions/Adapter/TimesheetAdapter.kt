@@ -1,7 +1,9 @@
-package za.co.varsitycollege.st10215473.rvmtimesolutions.CalendarAdapter
+package za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
@@ -24,7 +26,7 @@ class TimesheetAdapter(private val timesheetList: java.util.ArrayList<Timesheets
         val currentItem = timesheetList[position]
         holder.apply {
             binding.apply {
-                if(currentItem.image != null){
+                if(!currentItem.image.isNullOrEmpty()){
                     txtHeading.text = currentItem.name
                     txtNameCardView.text = currentItem.clientName
                     Picasso.get().load(currentItem.image).into(imgCardView)

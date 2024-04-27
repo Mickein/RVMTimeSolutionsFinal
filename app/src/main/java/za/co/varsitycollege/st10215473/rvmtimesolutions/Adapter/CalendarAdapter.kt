@@ -1,13 +1,9 @@
-package za.co.varsitycollege.st10215473.rvmtimesolutions.CalendarAdapter
+package za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter
 
-import android.icu.text.Transliterator.Position
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.CalendarEvents
-import za.co.varsitycollege.st10215473.rvmtimesolutions.R
 import za.co.varsitycollege.st10215473.rvmtimesolutions.databinding.EventDetailsBinding
 
 class CalendarAdapter(private val calendarEventsList: java.util.ArrayList<CalendarEvents>): RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
