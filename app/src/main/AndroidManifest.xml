@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RVMTimeSolutions"
         tools:targetApi="31">
-        <activity
-            android:name=".viewtimeheet"
-            android:exported="false" />
+
         <activity
             android:name=".viewtimesheet"
             android:exported="false" />
@@ -42,7 +40,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"> <!-- This line of code prevents keyboard from moving components -->
+            android:windowSoftInputMode="adjustNothing"> <!-- This line of code prevents keyboard from moving components -->
             <!-- Add any intent filters if necessary -->
         </activity>
 
