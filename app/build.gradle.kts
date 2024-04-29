@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.libsDirectory
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -61,5 +59,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.mpandroidchart)
     implementation(libs.picasso)
+
 
 }

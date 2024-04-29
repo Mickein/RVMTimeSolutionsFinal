@@ -5,13 +5,32 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     tools:context=".MainActivity">
 
     <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/loading_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/frame_container"/>
-
+        android:gravity="center"
+        android:visibility="visible"> <!-- Initially hidden -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundTint="#FFFFFF"
+            android:visibility="visible" />
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"

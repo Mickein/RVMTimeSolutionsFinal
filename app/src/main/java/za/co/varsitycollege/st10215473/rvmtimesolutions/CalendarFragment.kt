@@ -2,7 +2,6 @@ package za.co.varsitycollege.st10215473.rvmtimesolutions
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,8 @@ import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -20,6 +21,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter.CalendarAdapter
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.CalendarEvents
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
@@ -68,7 +71,19 @@ class CalendarFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         linear.layoutManager = linearLayoutManager
 
+        loadData()
         return view
+    }
+    private fun loadData() {
+        // Show loading in Activity
+        (activity as MainActivity).showLoading()
+
+        // Simulate data loading
+        lifecycleScope.launch {
+            delay(2000) // Simulate network delay
+            // Hide loading after data is ready
+            (activity as MainActivity).hideLoading()
+        }
     }
 
     private fun showAddEventDialog() {

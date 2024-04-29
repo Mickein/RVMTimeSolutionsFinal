@@ -3,12 +3,12 @@ package za.co.varsitycollege.st10215473.rvmtimesolutions
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.SeekBar
+import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -22,8 +22,6 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.utils.ColorTemplate
 
 
 class DashboardFragment : Fragment() {
@@ -78,6 +76,7 @@ class DashboardFragment : Fragment() {
         setData(barChart)
         return view
     }
+
 
     private fun setupChart(barChart: BarChart) {
         barChart.setDrawBarShadow(false)
