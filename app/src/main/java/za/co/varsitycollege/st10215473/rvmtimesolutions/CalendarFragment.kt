@@ -86,6 +86,7 @@ class CalendarFragment : Fragment() {
         }
     }
 
+
     private fun showAddEventDialog() {
         val dialogBuilder = AlertDialog.Builder(requireContext())
         val eventForm = layoutInflater.inflate(R.layout.add_event, null)
