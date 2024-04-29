@@ -3,12 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimesheetFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".TimesheetFragment"
+    android:background="@drawable/background">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/rvmLogo"
+        android:layout_width="58dp"
+        android:layout_height="56dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/rvm_logo" />
+
+    <Spinner
+        android:id="@+id/sprTimeSheetFilter"
+        android:layout_width="291dp"
+        android:layout_height="54dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/roundstyle"
+        android:backgroundTint="#7F8487"
+        android:textAlignment="center"
+        android:textColor="#F6F5F5"
+        android:textColorHint="#F6F5F5" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="333dp"
+        android:layout_height="559dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="140dp"
+        app:cardCornerRadius="20dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTimesheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
 
 </FrameLayout>

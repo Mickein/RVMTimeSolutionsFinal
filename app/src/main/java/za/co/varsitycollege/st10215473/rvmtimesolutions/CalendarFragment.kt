@@ -2,21 +2,31 @@ package za.co.varsitycollege.st10215473.rvmtimesolutions
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import za.co.varsitycollege.st10215473.rvmtimesolutions.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter.CalendarAdapter
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.CalendarEvents
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
+import za.co.varsitycollege.st10215473.rvmtimesolutions.databinding.FragmentCalendarBinding
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -27,9 +37,13 @@ import java.util.Locale
 class CalendarFragment : Fragment() {
     private lateinit var calendar: CalendarView
     private lateinit var selectedDate: Date
-    private lateinit var linear: LinearLayout
+    private lateinit var linear: RecyclerView
     private lateinit var addTimeButton: ImageButton
     private lateinit var eventName: EditText
+    private lateinit var firebaseRef: DatabaseReference
+    private lateinit var calendarEventsList: ArrayList<CalendarEvents>
+    private var binding: FragmentCalendarBinding? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,8 +51,13 @@ class CalendarFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
 
+        val binding = FragmentCalendarBinding.inflate(inflater, container, false)
+
         calendar = view.findViewById(R.id.calendarView)
+
         linear = view.findViewById(R.id.linearLayout)
+        firebaseRef = FirebaseDatabase.getInstance().getReference("CalendarEvents")
+        calendarEventsList = arrayListOf()
 
         calendar.setOnDateChangeListener { _, year, month, dayOfMonth->
             val calendar = Calendar.getInstance()
@@ -46,8 +65,27 @@ class CalendarFragment : Fragment() {
             selectedDate = calendar.time
             showAddEventDialog()
         }
+
+        fetchData()
+
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        linear.layoutManager = linearLayoutManager
+
+        loadData()
         return view
     }
+    private fun loadData() {
+        // Show loading in Activity
+        (activity as MainActivity).showLoading()
+
+        // Simulate data loading
+        lifecycleScope.launch {
+            delay(2000) // Simulate network delay
+            // Hide loading after data is ready
+            (activity as MainActivity).hideLoading()
+        }
+    }
+
 
     private fun showAddEventDialog() {
         val dialogBuilder = AlertDialog.Builder(requireContext())
@@ -72,13 +110,66 @@ class CalendarFragment : Fragment() {
                 .build()
             materialTimePicker.addOnPositiveButtonClickListener {
                 val eventN = eventName.text.toString()
-                addEvent(materialTimePicker.hour, materialTimePicker.minute, eventN)
+                addEventToFireBase(materialTimePicker.hour, materialTimePicker.minute, eventN)
             }
             materialTimePicker.show(parentFragmentManager, "material_time_picker")
         }
     }
 
-    fun addEvent(hour: Int, minute: Int, name: String) {
+    private fun addEventToFireBase(hour: Int, minute: Int, name: String){
+        val modifiedHour = getHourAmPm(hour)
+        val amPm = if (hour > 11) "PM" else "AM"
+        val numberFormat = DecimalFormat("00")
+
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formattedDate = sdf.format(selectedDate)
+
+        val time = "${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
+
+        if(name.isEmpty()){
+            eventName.error = "Add a project name"
+            return
+        }
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+
+        val eventId = firebaseRef.push().key!!
+        val events = CalendarEvents(eventId, formattedDate, name, time, "", uid)
+
+        firebaseRef.child(eventId).setValue(events)
+            .addOnCompleteListener {
+                Toast.makeText(context, "Event Added Successfully", Toast.LENGTH_SHORT).show()
+            }
+        view
+    }
+
+    private fun fetchData(){
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+        firebaseRef.orderByChild("userId").equalTo(uid).addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                calendarEventsList.clear()
+                if(snapshot.exists()){
+                    for (calendarSnap in snapshot.children){
+                        val calendar = calendarSnap.getValue(CalendarEvents::class.java)
+                        calendarEventsList.add(calendar!!)
+                    }
+                }
+                val calendarAdapter = CalendarAdapter(calendarEventsList)
+                val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
+                linear.addItemDecoration(SpacesItemDecoration(spacingInPixels))
+                linear.adapter = calendarAdapter
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "error: ${error}", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
+
+    /*fun addEvent(hour: Int, minute: Int, name: String) {
         val modifiedHour = getHourAmPm(hour)
         val amPm = if (hour > 11) "PM" else "AM"
         val numberFormat = DecimalFormat("00")
@@ -92,16 +183,19 @@ class CalendarFragment : Fragment() {
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val formattedDate = sdf.format(selectedDate)
 
+        eventNameTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         eventNameTextView.text = "Event Name: $name"
 
         // Set the event date
+        eventDateTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         eventDateTextView.text = "Event Date: $formattedDate"
 
         // Set the event time
+        eventTimeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         eventTimeTextView.text = "Event Time: ${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
 
         linear.addView(cardView)
-    }
+    }*/
 
     private fun getHourAmPm(hour: Int): Int {
         var modifiedHour = if (hour > 11) hour - 12 else hour

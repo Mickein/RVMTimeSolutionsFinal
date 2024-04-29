@@ -1,8 +1,8 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.libsDirectory
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.gms.google-services")
+    id("kotlin-kapt")
 
 }
 
@@ -21,6 +21,9 @@ android {
     }
 
     buildTypes {
+        buildFeatures{
+            viewBinding = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -47,8 +50,15 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.mpandroidchart)
+    implementation(libs.picasso)
+
+
 }

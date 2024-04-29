@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/archivo_black</item>
         <item>@font/bungee_inline</item>
+        <item>@font/dela_gothic_one</item>
+        <item>@font/farro_bold</item>
         <item>@font/gupter_medium</item>
         <item>@font/londrina_solid</item>
         <item>@font/luckiest_guy</item>
