@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import za.co.varsitycollege.st10215473.rvmtimesolutions.CalendarAdapter.CalendarAdapter
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter.CalendarAdapter
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.CalendarEvents
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
 import za.co.varsitycollege.st10215473.rvmtimesolutions.databinding.FragmentCalendarBinding
@@ -110,7 +110,10 @@ class CalendarFragment : Fragment() {
 
         val time = "${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
 
-        if(name.isEmpty()) eventName.error = "Add a project name"
+        if(name.isEmpty()){
+            eventName.error = "Add a project name"
+            return
+        }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         val uid = currentUser?.uid
@@ -126,7 +129,9 @@ class CalendarFragment : Fragment() {
     }
 
     private fun fetchData(){
-        firebaseRef.addValueEventListener(object: ValueEventListener{
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+        firebaseRef.orderByChild("userId").equalTo(uid).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 calendarEventsList.clear()
                 if(snapshot.exists()){

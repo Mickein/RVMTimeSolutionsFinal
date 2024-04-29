@@ -10,8 +10,11 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Profile
 
 class RegisterPage : AppCompatActivity() {
     //variable for going back to Login page if user has an existing account
@@ -34,14 +37,18 @@ class RegisterPage : AppCompatActivity() {
         emailEdit = findViewById(R.id.edtRegisterEmail)
         passwordEdit = findViewById(R.id.edtRegisterPassword)
         registerButton = findViewById(R.id.txtRegister)
+        firebaseRef = FirebaseDatabase.getInstance().getReference("Profile")
 
         //Firebase authentication
         authReg = Firebase.auth
         registerButton.setOnClickListener()
         {
+            val name = firstName.text.toString()
+            val surname = surname.text.toString()
             val email = emailEdit.text.toString()
             val password = passwordEdit.text.toString()
-            RegisterUser(email, password)
+
+            RegisterUser(email, password, name, surname)
         }
     }
     fun openLoginPage()
@@ -51,23 +58,41 @@ class RegisterPage : AppCompatActivity() {
             val intent = Intent(this, LoginPage::class.java)
             startActivity(intent)
         })
-6
     }
 
-    private fun RegisterUser(email: String, password: String) {
+    private fun RegisterUser(email: String, password: String, name: String, surname: String) {
         authReg.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-// Sign in success, update UI with the signed-in user's information
+                    // Sign in success, update UI with the signed-in user's information
                     Toast.makeText(baseContext, "Registration Successful", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this@RegisterPage, DashboardFragment::class.java )
-                    startActivity(intent)
-                    finish()
+
+                    val user = authReg.currentUser
+                    val uid = user?.uid
+                    if(user != null){
+                        val userProfile = Profile(uid, name, surname, email, "", "", "", "")
+                        addUserToFirebase(userProfile, user)
+                    }
                 } else {
-// If sign in fails, display a message to the user.
+                    // If sign in fails, display a message to the user.
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT,).show()
                 }
             }
     }
+
+    private fun addUserToFirebase(userProfile: Profile, user: FirebaseUser) {
+        val uid = user.uid
+
+        firebaseRef.child(uid).setValue(userProfile)
+            .addOnSuccessListener {
+                val intent = Intent(this@RegisterPage, LoginPage::class.java)
+                startActivity(intent)
+                finish()
+            }
+            .addOnFailureListener{
+                Toast.makeText(baseContext, "Failed to add profile to database", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 
 }

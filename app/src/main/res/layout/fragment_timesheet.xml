@@ -17,7 +17,7 @@
 
     <Spinner
         android:id="@+id/sprTimeSheetFilter"
-        android:layout_width="match_parent"
+        android:layout_width="291dp"
         android:layout_height="54dp"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="80dp"
@@ -25,10 +25,10 @@
         android:backgroundTint="#7F8487"
         android:textAlignment="center"
         android:textColor="#F6F5F5"
-        android:textColorHint="#F6F5F5"/>
+        android:textColorHint="#F6F5F5" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="333dp"
         android:layout_height="559dp"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="140dp"
@@ -37,7 +37,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTimesheet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </androidx.cardview.widget.CardView>
 
 

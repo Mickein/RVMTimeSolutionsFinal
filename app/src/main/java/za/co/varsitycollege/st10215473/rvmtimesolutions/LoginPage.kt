@@ -31,30 +31,40 @@ class LoginPage : AppCompatActivity() {
         openDash = findViewById(R.id.txtLogin)
         auth = Firebase.auth
 
+        openDash = findViewById(R.id.txtLogin)
+        openDash.setOnClickListener(View.OnClickListener {
+            val password = passwordEdit.text.toString()
+            val email = loginemail.text.toString()
+
+            if(password.isEmpty()) {
+                passwordEdit.error = "Type a password"
+                return@OnClickListener  // Return to prevent further execution
+            }
+
+            if(email.isEmpty()) {
+                loginemail.error = "Type an email"
+                return@OnClickListener  // Return to prevent further execution
+            }
+            if(password.isNotEmpty() && email.isNotEmpty()){
+                LoginUser(email, password)
+            }
+        })
+
         //Open Register Page
         openRegPage()
     }
-
-    fun openDashboardPage()
-    {
-        openDash = findViewById(R.id.txtLogin)
-        openDash.setOnClickListener(View.OnClickListener {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-    })
-
-}
 
     private fun LoginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-// Sign in success, update UI with the signed-in user's information
+                // Sign in success, update UI with the signed-in user's information
                     Toast.makeText(baseContext, "Login Successful", Toast.LENGTH_LONG).show()
-                    val user = auth.currentUser
-                    openDashboardPage()
-                } else {
-// If sign in fails, display a message to the user.
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }
+                else {
+                // If sign in fails, display a message to the user.
                     Toast.makeText(
                         baseContext,
                         "Authentication failed.",
@@ -71,5 +81,9 @@ class LoginPage : AppCompatActivity() {
             val intent = Intent(this, RegisterPage::class.java)
             startActivity(intent)
         })
+    }
+
 }
-}
+
+
+
