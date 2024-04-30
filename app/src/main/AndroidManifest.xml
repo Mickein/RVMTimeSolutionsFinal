@@ -12,9 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RVMTimeSolutions"
         tools:targetApi="31">
-
         <activity
-            android:name=".viewtimesheet"
+            android:name=".ViewTimesheetPage"
             android:exported="false" />
         <activity
             android:name=".BeginPage"

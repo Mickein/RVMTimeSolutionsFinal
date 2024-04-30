@@ -83,6 +83,7 @@ class DashboardFragment : Fragment() {
         endDateButton.text = getTodaysDate()
 
         query = firebaseRef.orderByChild("userId").equalTo(userId)
+        setPieChartData(query)
 
         viewAllButton.setOnClickListener {
             query = firebaseRef.orderByChild("userId").equalTo(userId)

@@ -2,6 +2,7 @@ package za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -10,9 +11,18 @@ import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
 import za.co.varsitycollege.st10215473.rvmtimesolutions.R
 import za.co.varsitycollege.st10215473.rvmtimesolutions.databinding.TimesheetCardviewBinding
 
-class TimesheetAdapter(private val timesheetList: java.util.ArrayList<Timesheets>): RecyclerView.Adapter<TimesheetAdapter.ViewHolder>() {
+class TimesheetAdapter(private val timesheetList: java.util.ArrayList<Timesheets>, private val clickListener: OnTimesheetClickListener): RecyclerView.Adapter<TimesheetAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: TimesheetCardviewBinding): RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: TimesheetCardviewBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val timesheetId = timesheetList[adapterPosition].id
+            clickListener.onTimesheetClicked(timesheetId)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(TimesheetCardviewBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -38,5 +48,9 @@ class TimesheetAdapter(private val timesheetList: java.util.ArrayList<Timesheets
                 }
             }
         }
+    }
+
+    interface OnTimesheetClickListener {
+        fun onTimesheetClicked(timesheetId: String?)
     }
 }

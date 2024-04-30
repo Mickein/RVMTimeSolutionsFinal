@@ -158,7 +158,7 @@ class AddFragment : Fragment() {
                         task.metadata!!.reference!!.downloadUrl
                             .addOnSuccessListener {url ->
                                 val imgUrl = url.toString()
-                                timesheets = Timesheets(timesheetId, name, date, startTime, endTime, category, description, minHour, maxHour, imgUrl, client, uid)
+                                timesheets = Timesheets(category, client, date, description, endTime, timesheetId, imgUrl, maxHour, minHour, name, startTime, uid)
                                 firebaseRef.child(timesheetId).setValue(timesheets)
                                     .addOnCompleteListener {
                                         Toast.makeText(context, "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
@@ -179,7 +179,7 @@ class AddFragment : Fragment() {
             }
         }
         else{
-            timesheets = Timesheets(timesheetId, name, date, startTime, endTime, category, description, minHour, maxHour, "", client, uid)
+            timesheets = Timesheets(category, client, date, description, endTime, timesheetId, "", maxHour, minHour, name, startTime, uid)
             firebaseRef.child(timesheetId).setValue(timesheets)
                 .addOnCompleteListener {
                     Toast.makeText(context, "Timesheet Captured Failed", Toast.LENGTH_SHORT).show()

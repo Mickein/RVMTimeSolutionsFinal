@@ -1,5 +1,6 @@
 package za.co.varsitycollege.st10215473.rvmtimesolutions
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,7 +27,7 @@ import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
 
 
-class TimesheetFragment : Fragment() {
+class TimesheetFragment : Fragment(), TimesheetAdapter.OnTimesheetClickListener {
     private lateinit var firebaseRef: DatabaseReference
     private lateinit var rvTimesheetCardView: RecyclerView
     private lateinit var timesheetList: ArrayList<Timesheets>
@@ -49,11 +50,12 @@ class TimesheetFragment : Fragment() {
 
         filterSpinner.adapter = adapter
 
-
         fetchData()
 
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rvTimesheetCardView.layoutManager = linearLayoutManager
+
+
 
         return view
     }
@@ -72,10 +74,11 @@ class TimesheetFragment : Fragment() {
                 if(snapshot.exists()){
                     for (timesheetSnap in snapshot.children){
                         val timesheetCard = timesheetSnap.getValue(Timesheets::class.java)
-                        timesheetList.add(timesheetCard!!)
+                        timesheetCard?.let {
+                            timesheetList.add(it)
+                        }
                     }
-
-                    val timesheetAdapter = TimesheetAdapter(timesheetList)
+                    val timesheetAdapter = TimesheetAdapter(timesheetList, this@TimesheetFragment)
                     val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
                     rvTimesheetCardView.addItemDecoration(SpacesItemDecoration(spacingInPixels))
                     rvTimesheetCardView.adapter = timesheetAdapter
@@ -85,10 +88,17 @@ class TimesheetFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 if (isAdded) {
                     // Access context here only if the fragment is attached
-                    Toast.makeText(requireContext(), "error: $error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity().applicationContext, "error: $error", Toast.LENGTH_SHORT).show()
                 }
             }
 
         })
+    }
+    override fun onTimesheetClicked(timesheetId: String?) {
+        // Handle item click here, for example, navigate to the details activity
+        val intent = Intent(requireContext(), ViewTimesheetPage::class.java).apply {
+            putExtra("id", timesheetId)
+        }
+        startActivity(intent)
     }
 }

@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        rootView = findViewById(R.id.main) // Root view for layout listener
+        rootView = findViewById(R.id.tblTimesheet) // Root view for layout listener
         bottomNavBar = findViewById(R.id.bottom_nav)
         progressBar = findViewById(R.id.progressBar)
 
