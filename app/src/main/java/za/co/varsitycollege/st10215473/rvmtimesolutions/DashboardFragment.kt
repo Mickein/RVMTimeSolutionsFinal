@@ -1,14 +1,22 @@
 package za.co.varsitycollege.st10215473.rvmtimesolutions
 
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.SeekBar
-import androidx.fragment.app.Fragment
+import android.widget.Spinner
+import android.widget.Toast
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -18,10 +26,23 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 class DashboardFragment : Fragment() {
@@ -30,6 +51,16 @@ class DashboardFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var seekBar: SeekBar
     private lateinit var barChart: BarChart
+    private lateinit var firebaseRef: DatabaseReference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var query: Query
+    private lateinit var queryPeriod: Query
+    private lateinit var startDatePickerDialog: DatePickerDialog
+    private lateinit var endDatePickerDialog: DatePickerDialog
+    private lateinit var startDateButton: Button
+    private lateinit var endDateButton: Button
+    private lateinit var viewAllButton: Button
+    private lateinit var viewPeriodButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,32 +69,128 @@ class DashboardFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
+        auth = FirebaseAuth.getInstance()
+        val userId = auth.currentUser?.uid
+        firebaseRef = FirebaseDatabase.getInstance().reference.child("Timesheets")
+
+        viewPeriodButton = view.findViewById(R.id.btnViewPeriod)
+        viewAllButton = view.findViewById(R.id.btnViewAll)
+        endDateButton = view.findViewById(R.id.btnEndDatePicker)
+        startDateButton = view.findViewById(R.id.btnStartDatePicker)
         pieChart = view.findViewById(R.id.pie_chart)
 
-        val pieList: ArrayList<PieEntry> = ArrayList()
-        pieList.add(PieEntry(50f, "Construction"))
-        pieList.add(PieEntry(150f, "App Development"))
-        pieList.add(PieEntry(23f, "Marketing"))
-        pieList.add(PieEntry(53f, "Research"))
+        startDateButton.text = getTodaysDate()
+        endDateButton.text = getTodaysDate()
 
-        val pieDataSet = PieDataSet(pieList, "List")
-        // Define custom colors for the slices
-        val colors = listOf(
-            Color.parseColor("#A5BEEF"), // Construction
-            Color.parseColor("#7B9BDA"), // App Development
-            Color.parseColor("#3F68BA"), // Marketing
-            Color.parseColor("#1645A4")  // Research
-        )
-        pieDataSet.colors = colors
-        pieDataSet.valueTextSize=15f
-        pieDataSet.valueTextColor= Color.BLACK
-        val pieData = PieData(pieDataSet)
+        query = firebaseRef.orderByChild("userId").equalTo(userId)
+
+        viewAllButton.setOnClickListener {
+            query = firebaseRef.orderByChild("userId").equalTo(userId)
+            setPieChartData(query)
+        }
+
+        startDateButton.setOnClickListener{
+            openStartDatePicker(it)
+        }
+        endDateButton.setOnClickListener{
+            openEndDatePicker(it)
+        }
+
+        viewPeriodButton.setOnClickListener {
+            val startDate = startDateButton.text.toString()
+            val endDate = endDateButton.text.toString()
+
+            query = firebaseRef
+                .orderByChild("date")
+                .startAt(startDate)
+                .endAt(endDate)
+            setPieChartData(query)
+        }
+
+        val barChart = view.findViewById<BarChart>(R.id.bar_chart)
+        setUpBarChart(barChart)
+        setBarChartData(barChart)
+        return view
+    }
+
+    private fun setPieChartData(query: Query){
+        pieChart.clear()
+        pieChart.invalidate()
+
+
+        query.addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    val categoryHoursMap = HashMap<String, Double>()
+                    for (dataSnapshot in snapshot.children){
+                        val category = dataSnapshot.child("category").value.toString()
+                        val startTime = dataSnapshot.child("startTime").value.toString()
+                        val endTime = dataSnapshot.child("endTime").value.toString()
+                        //date needs to be added i think
+
+                        val hoursSpent = calculateHoursSpent(startTime, endTime)
+
+                        if(categoryHoursMap.containsKey(category)){
+                            categoryHoursMap[category] = categoryHoursMap[category]!! + hoursSpent
+                        }
+                        else{
+                            categoryHoursMap[category] = hoursSpent
+                        }
+                    }
+                    setUpPieChart(categoryHoursMap)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+    private fun calculateHoursSpent(startTime: String?, endTime: String?): Double {
+        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
+        var hours: Double = 0.0
+        try {
+            // Parse start time and end time strings
+            val startDate = format.parse(startTime)
+            val endDate = format.parse(endTime)
+
+            // Calculate time difference in milliseconds
+           val timeDifference = endDate.time - startDate.time
+
+            hours =  timeDifference / (1000 * 60 * 60).toDouble()
+        } catch (e: Exception) {
+            // Handle parse errors or other exceptions
+            e.printStackTrace()
+        }
+        return hours
+    }
+
+    private fun setUpPieChart(categoryHoursMap: HashMap<String, Double>){
+
+        val pieEntries = ArrayList<PieEntry>()
+        for((category, hours) in categoryHoursMap){
+            pieEntries.add(PieEntry(hours.toFloat(), category))
+        }
+
+        val dataSet = PieDataSet(pieEntries, "Category Hours")
+        dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+        val data = PieData(dataSet)
+
+        dataSet.valueTextSize = 12f
+
         pieChart.description.isEnabled = false
-        pieChart.legend.isEnabled = false
-        pieChart.data = pieData
-        pieChart.centerText = "Total Hours Worked Per Category"
+        pieChart.legend.isEnabled = true
+        pieChart.legend.textSize = 12f
+        pieChart.legend.textColor = Color.BLACK
+        pieChart.setEntryLabelColor(Color.BLACK)
+        pieChart.setEntryLabelTextSize(12f)
+        pieChart.setUsePercentValues(false)
         pieChart.animateY(750)
 
+        pieChart.data = data
+        pieChart.centerText = "Total Hours Worked Per Category"
         pieChart.setCenterTextSize(15f)
         pieChart.setCenterTextColor(Color.BLACK)
         pieChart.setCenterTextOffset(0f, 0f)
@@ -71,14 +198,10 @@ class DashboardFragment : Fragment() {
         pieChart.setDrawCenterText(true)
         pieChart.setHoleColor(Color.TRANSPARENT)
 
-        val barChart = view.findViewById<BarChart>(R.id.bar_chart)
-        setupChart(barChart)
-        setData(barChart)
-        return view
+        pieChart.invalidate()
     }
 
-
-    private fun setupChart(barChart: BarChart) {
+    private fun setUpBarChart(barChart: BarChart) {
         barChart.setDrawBarShadow(false)
         barChart.setDrawValueAboveBar(true)
         barChart.description.isEnabled = false
@@ -90,7 +213,7 @@ class DashboardFragment : Fragment() {
         barChart.setDrawGridBackground(false)
     }
 
-    private fun setData(barChart: BarChart) {
+    private fun setBarChartData(barChart: BarChart) {
         val days = arrayOf("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun")
         val entries1 = floatArrayOf(5f, 3f, 4f, 2f, 1f, 6f, 2f) // Adjusted entries to fit the range
         val entries2 = floatArrayOf(8f, 7f, 8f, 4f, 7f, 8f, 3f) // Adjusted entries to fit the range
@@ -189,5 +312,68 @@ class DashboardFragment : Fragment() {
 
         // Set legend entries
         legend.setCustom(arrayOf(greenEntry, redEntry, blueEntry))
+    }
+
+    private fun initStartDatePicker() {
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            val adjustedMonth = month + 1
+            startDateButton.text = makeDateString(dayOfMonth, adjustedMonth, year)
+        }
+        val cal = Calendar.getInstance()
+        val style = AlertDialog.THEME_HOLO_LIGHT
+        startDatePickerDialog = DatePickerDialog(requireContext(), style, dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+    }
+
+    private fun initEndDatePicker() {
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            val adjustedMonth = month + 1
+            endDateButton.text = makeDateString(dayOfMonth, adjustedMonth, year)
+        }
+        val cal = Calendar.getInstance()
+        val style = AlertDialog.THEME_HOLO_LIGHT
+        endDatePickerDialog = DatePickerDialog(requireContext(), style, dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+    }
+    private fun getTodaysDate(): String {
+        val cal = Calendar.getInstance()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH) + 1
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+        return makeDateString(day, month, year)
+    }
+
+    private fun makeDateString(day: Int, month: Int, year: Int): String {
+        return getMonthFormat(month) + " " + day + " " + year
+    }
+
+    private fun getMonthFormat(month: Int): String {
+        return when (month) {
+            1 -> "JAN"
+            2 -> "FEB"
+            3 -> "MAR"
+            4 -> "APR"
+            5 -> "MAY"
+            6 -> "JUN"
+            7 -> "JUL"
+            8 -> "AUG"
+            9 -> "SEP"
+            10 -> "OCT"
+            11 -> "NOV"
+            12 -> "DEC"
+            else -> "JAN" // Default should never happen
+        }
+    }
+
+    fun openStartDatePicker(view: View) {
+        if (!::startDatePickerDialog.isInitialized) {
+            initStartDatePicker()
+        }
+        startDatePickerDialog.show()
+    }
+
+    fun openEndDatePicker(view: View) {
+        if (!::endDatePickerDialog.isInitialized) {
+            initEndDatePicker()
+        }
+        endDatePickerDialog.show()
     }
 }

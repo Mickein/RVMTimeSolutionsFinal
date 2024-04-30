@@ -145,6 +145,10 @@ class CalendarFragment : Fragment() {
     }
 
     private fun fetchData(){
+        if (!isAdded) {
+            // Fragment is not attached, handle appropriately
+            return
+        }
         val currentUser = FirebaseAuth.getInstance().currentUser
         val uid = currentUser?.uid
         firebaseRef.orderByChild("userId").equalTo(uid).addValueEventListener(object: ValueEventListener{

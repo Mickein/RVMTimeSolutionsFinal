@@ -43,7 +43,7 @@ class TimesheetFragment : Fragment() {
         rvTimesheetCardView = view.findViewById(R.id.rvTimesheet)
         firebaseRef = FirebaseDatabase.getInstance().getReference("Timesheets")
 
-        val items = listOf("Project Name", "Category", "Most Recent", "Item 4", "Item 5")
+        val items = listOf("All Entries", "Category", "Most Recent", "Oldest", "Date")
         val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -59,18 +59,22 @@ class TimesheetFragment : Fragment() {
     }
 
     private fun fetchData(){
+        if (!isAdded) {
+            // Fragment is not attached, handle appropriately
+            return
+        }
+
         val currentUser = FirebaseAuth.getInstance().currentUser
         val uid = currentUser?.uid
         firebaseRef.orderByChild("userId").equalTo(uid).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 timesheetList.clear()
                 if(snapshot.exists()){
-                    if(snapshot.exists()){
-                        for (timesheetSnap in snapshot.children){
-                            val timesheetCard = timesheetSnap.getValue(Timesheets::class.java)
-                            timesheetList.add(timesheetCard!!)
-                        }
+                    for (timesheetSnap in snapshot.children){
+                        val timesheetCard = timesheetSnap.getValue(Timesheets::class.java)
+                        timesheetList.add(timesheetCard!!)
                     }
+
                     val timesheetAdapter = TimesheetAdapter(timesheetList)
                     val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
                     rvTimesheetCardView.addItemDecoration(SpacesItemDecoration(spacingInPixels))
@@ -79,7 +83,10 @@ class TimesheetFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "error: ${error}", Toast.LENGTH_SHORT).show()
+                if (isAdded) {
+                    // Access context here only if the fragment is attached
+                    Toast.makeText(requireContext(), "error: $error", Toast.LENGTH_SHORT).show()
+                }
             }
 
         })
