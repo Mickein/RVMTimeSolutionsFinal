@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
@@ -84,19 +85,19 @@ class AddFragment : Fragment() {
             }
         }
 
-        uri = createUri()
-        registerPictureLauncher()
+        uri = createUri()//Some code by CodingZest on Youtube: https://www.youtube.com/watch?v=9XSlbZN1yFg&t=761s
+        registerPictureLauncher()//Some code by CodingZest on Youtube: https://www.youtube.com/watch?v=9XSlbZN1yFg&t=761s
 
         addImage.setOnClickListener{
             addedAnImage = true
             checkCameraPermissionAndOpen()
             val options = arrayOf("Take Photo", "Choose from Gallery")
-            val builder = AlertDialog.Builder(context)
+            val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Select Option")
             builder.setItems(options) { dialogInterface: DialogInterface, which: Int ->
                 when (which) {
                     0 -> {
-                        checkCameraPermissionAndOpen()
+                        checkCameraPermissionAndOpen()//Some code by CodingZest on Youtube: https://www.youtube.com/watch?v=9XSlbZN1yFg&t=761s
                     }
                     1 -> pickImage.launch("image/*")
                 }
@@ -183,6 +184,7 @@ class AddFragment : Fragment() {
         val date = dateButton.text.toString()
         val startTime = startTimeButton.text.toString()
         val endTime = endTimeButton.text.toString()
+        val timestamp = ServerValue.TIMESTAMP
 
         if(name.isEmpty()){
             projectNameText.error = "Add a Project Name"
@@ -221,10 +223,10 @@ class AddFragment : Fragment() {
                         task.metadata!!.reference!!.downloadUrl
                             .addOnSuccessListener {url ->
                                 val imgUrl = url.toString()
-                                timesheets = Timesheets(category, client, date, description, endTime, timesheetId, imgUrl, maxHour, minHour, name, startTime, uid)
+                                timesheets = Timesheets(category, client, date, description, endTime, timesheetId, imgUrl, maxHour, minHour, name, startTime,timestamp ,uid)
                                 firebaseRef.child(timesheetId).setValue(timesheets)
                                     .addOnCompleteListener {
-                                        Toast.makeText(context, "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(requireContext(), "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
 
                                         projectNameText.setText("")
                                         categoryText.setText("")
@@ -242,10 +244,10 @@ class AddFragment : Fragment() {
             }
         }
         else{
-            timesheets = Timesheets(category, client, date, description, endTime, timesheetId, "", maxHour, minHour, name, startTime, uid)
+            timesheets = Timesheets(category, client, date, description, endTime, timesheetId, "", maxHour, minHour, name, startTime,timestamp, uid)
             firebaseRef.child(timesheetId).setValue(timesheets)
                 .addOnCompleteListener {
-                    Toast.makeText(context, "Timesheet Captured Failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
                 }
             view
         }

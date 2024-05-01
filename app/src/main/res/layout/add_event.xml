@@ -7,7 +7,7 @@
     android:background="@drawable/roundstyle"
     android:backgroundTint="#00FFFFFF">
 
-    <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
         android:layout_height="218dp"

@@ -15,17 +15,26 @@
         android:layout_marginTop="12dp"
         android:src="@drawable/rvm_logo" />
 
-    <Spinner
-        android:id="@+id/sprTimeSheetFilter"
-        android:layout_width="291dp"
-        android:layout_height="54dp"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/roundstyle"
-        android:backgroundTint="#7F8487"
-        android:textAlignment="center"
-        android:textColor="#F6F5F5"
-        android:textColorHint="#F6F5F5" />
+        android:layout_marginTop="75dp"
+        android:hint="Sort By"
+        app:startIconDrawable="@drawable/sort_by">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="none"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="All Entries" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="333dp"

@@ -68,6 +68,9 @@ class CalendarFragment : Fragment() {
 
         fetchData()
 
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
+        linear.addItemDecoration(SpacesItemDecoration(spacingInPixels))
+
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         linear.layoutManager = linearLayoutManager
 
@@ -161,8 +164,6 @@ class CalendarFragment : Fragment() {
                     }
                 }
                 val calendarAdapter = CalendarAdapter(calendarEventsList)
-                val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
-                linear.addItemDecoration(SpacesItemDecoration(spacingInPixels))
                 linear.adapter = calendarAdapter
             }
 
