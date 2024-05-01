@@ -1,21 +1,24 @@
 package za.co.varsitycollege.st10215473.rvmtimesolutions
 
-import android.app.Activity
+import android.Manifest
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
+import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -23,14 +26,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
-import java.text.SimpleDateFormat
+import java.io.File
 import java.util.Calendar
-import java.util.Locale
-
-
 
 class AddFragment : Fragment() {
-    private lateinit var dateText: EditText
     private lateinit var categoryText: EditText
     private lateinit var descriptionText: EditText
     private lateinit var minGoalText: EditText
@@ -43,12 +42,14 @@ class AddFragment : Fragment() {
     private lateinit var clientNameText: EditText
     private lateinit var addImage: ImageView
     private var uri: Uri? = null
-
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var dateButton: Button
     private lateinit var startTimeButton: Button
     private lateinit var endTimeButton: Button
     private var addedAnImage: Boolean = false
+    private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
+    private val CAMERA_PERMISSION_REQUEST_CODE = 100
+    private val CAMERA_REQUEST_CODE = 101
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,9 +84,25 @@ class AddFragment : Fragment() {
             }
         }
 
+        uri = createUri()
+        registerPictureLauncher()
+
         addImage.setOnClickListener{
             addedAnImage = true
-            pickImage.launch("image/*")
+            checkCameraPermissionAndOpen()
+            val options = arrayOf("Take Photo", "Choose from Gallery")
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Select Option")
+            builder.setItems(options) { dialogInterface: DialogInterface, which: Int ->
+                when (which) {
+                    0 -> {
+                        checkCameraPermissionAndOpen()
+                    }
+                    1 -> pickImage.launch("image/*")
+                }
+                dialogInterface.dismiss()
+            }
+            builder.show()
         }
 
         dateButton.setOnClickListener {
@@ -101,6 +118,52 @@ class AddFragment : Fragment() {
             captureTimesheet()
         }
         return view
+    }
+    private fun createUri(): Uri{
+        val imageFile = File(requireActivity().application.filesDir,"camera_photo.jpg")
+        return FileProvider.getUriForFile(
+            requireContext().applicationContext,
+            "za.co.varsitycollege.st10215473.rvmtimesolutions.fileprovider",
+            imageFile
+        )
+    }
+
+    private fun registerPictureLauncher(){
+        takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()){isSuccess ->
+            try {
+                if(isSuccess){
+                    addImage.setImageURI(null)
+                    addImage.setImageURI(uri)
+                }
+            }catch(e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+    private fun checkCameraPermissionAndOpen(){
+        if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        }
+        else{
+            takePictureLauncher.launch(uri)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == CAMERA_PERMISSION_REQUEST_CODE){
+            if(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                takePictureLauncher.launch(uri)
+            }
+            else{
+                Toast.makeText(context, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -258,5 +321,4 @@ class AddFragment : Fragment() {
         }
         datePickerDialog.show()
     }
-
 }
