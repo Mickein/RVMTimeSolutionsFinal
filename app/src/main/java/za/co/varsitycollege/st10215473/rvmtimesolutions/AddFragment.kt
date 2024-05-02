@@ -90,7 +90,6 @@ class AddFragment : Fragment() {
 
         addImage.setOnClickListener{
             addedAnImage = true
-            checkCameraPermissionAndOpen()
             val options = arrayOf("Take Photo", "Choose from Gallery")
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Select Option")
