@@ -154,22 +154,20 @@ class DashboardFragment : Fragment() {
         var hours: Double = 0.0
         try {
             // Parse start time and end time strings
-            var startTime = format.parse(startTime)
-            var endTime = format.parse(endTime)
+            val start = format.parse(startTime)
+            val end = format.parse(endTime)
 
-            if (startTime != null) {
-                if(startTime.time.toInt() == 86400000){//if start time starts at 00:00
-                    startTime.time = 0
-                }
+            if (end.before(start)) {//if end time ends the next day
+                val calendar = Calendar.getInstance()
+                calendar.time = end
+                calendar.add(Calendar.DAY_OF_MONTH, 1)
+                end.time = calendar.timeInMillis
             }
 
-            if (endTime != null) {
-                if(endTime.time <= 86400000){ //if end time starts at 00:00 or higher(1:00, 2:00, etc)
-                    endTime.time += 86400000
-                }
-            }
             // Calculate time difference in milliseconds
-           val timeDifference = endTime.time - startTime.time
+           val timeDifference = end.time - start.time
+
+            Toast.makeText(requireContext(), "${timeDifference}", Toast.LENGTH_LONG).show()
 
             hours =  timeDifference / (1000 * 60 * 60).toDouble()
         } catch (e: Exception) {
