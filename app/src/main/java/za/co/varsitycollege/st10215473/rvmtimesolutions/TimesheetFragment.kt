@@ -142,6 +142,7 @@ class TimesheetFragment : Fragment(), TimesheetAdapter.OnTimesheetClickListener{
                 filterOkButton.setOnClickListener {
                     val startDate = startDateButton.text.toString()
                     val endDate = endDateButton.text.toString()
+
                     query = firebaseRef
                         .orderByChild("date")
                         .startAt(startDate)
@@ -214,11 +215,12 @@ class TimesheetFragment : Fragment(), TimesheetAdapter.OnTimesheetClickListener{
 
     private fun fetchData(query: Query){
         if (!isAdded) {
-            // Fragment is not attached, handle appropriately
+
             return
         }
 
         timesheetList.clear()
+        rvTimesheetCardView.adapter = null
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         val uid = currentUser?.uid

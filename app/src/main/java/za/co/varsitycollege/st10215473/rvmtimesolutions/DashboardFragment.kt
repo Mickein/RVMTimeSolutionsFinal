@@ -122,6 +122,8 @@ class DashboardFragment : Fragment() {
         pieChart.clear()
         pieChart.invalidate()
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
 
         query.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -131,15 +133,16 @@ class DashboardFragment : Fragment() {
                         val category = dataSnapshot.child("category").value.toString()
                         val startTime = dataSnapshot.child("startTime").value.toString()
                         val endTime = dataSnapshot.child("endTime").value.toString()
-                        //date needs to be added i think
+                        val userId = dataSnapshot.child("userId").value.toString()
+                        if(userId == uid){
+                            val hoursSpent = calculateHoursSpent(startTime, endTime)
 
-                        val hoursSpent = calculateHoursSpent(startTime, endTime)
-
-                        if(categoryHoursMap.containsKey(category)){
-                            categoryHoursMap[category] = categoryHoursMap[category]!! + hoursSpent
-                        }
-                        else{
-                            categoryHoursMap[category] = hoursSpent
+                            if(categoryHoursMap.containsKey(category)){
+                                categoryHoursMap[category] = categoryHoursMap[category]!! + hoursSpent
+                            }
+                            else{
+                                categoryHoursMap[category] = hoursSpent
+                            }
                         }
                     }
                     setUpPieChart(categoryHoursMap)
