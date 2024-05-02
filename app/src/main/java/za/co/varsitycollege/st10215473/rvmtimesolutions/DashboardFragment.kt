@@ -165,9 +165,7 @@ class DashboardFragment : Fragment() {
             }
 
             // Calculate time difference in milliseconds
-           val timeDifference = end.time - start.time
-
-            Toast.makeText(requireContext(), "${timeDifference}", Toast.LENGTH_LONG).show()
+            val timeDifference = end.time - start.time
 
             hours =  timeDifference / (1000 * 60 * 60).toDouble()
         } catch (e: Exception) {
