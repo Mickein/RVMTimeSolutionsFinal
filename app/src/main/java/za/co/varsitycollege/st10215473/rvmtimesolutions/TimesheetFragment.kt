@@ -227,8 +227,11 @@ class TimesheetFragment : Fragment(), TimesheetAdapter.OnTimesheetClickListener{
                 if(snapshot.exists()){
                     for (timesheetSnap in snapshot.children){
                         val timesheetCard = timesheetSnap.getValue(Timesheets::class.java)
-                        timesheetCard?.let {
-                            timesheetList.add(it)
+                        val userId = timesheetSnap.child("userId").value.toString()
+                        if(userId == uid){
+                            timesheetCard?.let {
+                                timesheetList.add(it)
+                            }
                         }
                     }
                     if(oldestToNew == true){
