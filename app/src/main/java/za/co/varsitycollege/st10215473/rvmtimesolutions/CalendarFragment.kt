@@ -168,34 +168,6 @@ class CalendarFragment : Fragment() {
         })
     }
 
-    /*fun addEvent(hour: Int, minute: Int, name: String) {
-        val modifiedHour = getHourAmPm(hour)
-        val amPm = if (hour > 11) "PM" else "AM"
-        val numberFormat = DecimalFormat("00")
-
-
-        val cardView = layoutInflater.inflate(R.layout.event_details, null)
-        val eventNameTextView = cardView.findViewById<TextView>(R.id.exame_name_txt)
-        val eventDateTextView = cardView.findViewById<TextView>(R.id.event_date_txt)
-        val eventTimeTextView = cardView.findViewById<TextView>(R.id.event_time_txt)
-
-        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val formattedDate = sdf.format(selectedDate)
-
-        eventNameTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        eventNameTextView.text = "Event Name: $name"
-
-        // Set the event date
-        eventDateTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        eventDateTextView.text = "Event Date: $formattedDate"
-
-        // Set the event time
-        eventTimeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        eventTimeTextView.text = "Event Time: ${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
-
-        linear.addView(cardView)
-    }*/
-
     private fun getHourAmPm(hour: Int): Int {
         var modifiedHour = if (hour > 11) hour - 12 else hour
         if(modifiedHour == 0){
