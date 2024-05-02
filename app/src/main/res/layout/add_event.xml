@@ -68,7 +68,7 @@
                 app:srcCompat="@drawable/rvm_logo" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spinnerClientName"
                 android:layout_width="191dp"
                 android:layout_height="58dp"
                 android:background="@drawable/roundstyle"

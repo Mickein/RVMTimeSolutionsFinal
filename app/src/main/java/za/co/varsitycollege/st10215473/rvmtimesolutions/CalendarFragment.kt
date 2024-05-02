@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -21,8 +22,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter.CalendarAdapter
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.CalendarEvents
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
@@ -43,13 +42,19 @@ class CalendarFragment : Fragment() {
     private lateinit var firebaseRef: DatabaseReference
     private lateinit var calendarEventsList: ArrayList<CalendarEvents>
     private var binding: FragmentCalendarBinding? = null
+    private lateinit var spin: Spinner
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val addEventView = inflater.inflate(R.layout.add_event, container, false)
+        spin = addEventView.findViewById(R.id.spinnerClientName)
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
+        val items = arrayOf("Coming Soon")
+        val adapter = ArrayAdapter<String>(requireContext(), R.layout.dropdown_item, items)
+        spin.setAdapter(adapter)
 
         val binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
@@ -74,20 +79,9 @@ class CalendarFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         linear.layoutManager = linearLayoutManager
 
-        loadData()
         return view
     }
-    private fun loadData() {
-        // Show loading in Activity
-        (activity as MainActivity).showLoading()
 
-        // Simulate data loading
-        lifecycleScope.launch {
-            delay(2000) // Simulate network delay
-            // Hide loading after data is ready
-            (activity as MainActivity).hideLoading()
-        }
-    }
 
 
     private fun showAddEventDialog() {

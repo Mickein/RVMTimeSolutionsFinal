@@ -3,7 +3,6 @@ package za.co.varsitycollege.st10215473.rvmtimesolutions
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,14 +12,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavBar: BottomNavigationView
     private lateinit var rootView: View
-    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         rootView = findViewById(R.id.tblTimesheet) // Root view for layout listener
         bottomNavBar = findViewById(R.id.bottom_nav)
-        progressBar = findViewById(R.id.progressBar)
+
 
         setupWindowInsets()
         setupBottomNavigation()
@@ -28,13 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         observeKeyboardVisibility()
     }
-    fun showLoading() {
-        progressBar.visibility = View.VISIBLE
-    }
 
-    fun hideLoading() {
-        progressBar.visibility = View.GONE
-    }
 
     private fun setupWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
@@ -46,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupBottomNavigation() {
         bottomNavBar.setItemIconTintList(null)
-        showLoading()
         bottomNavBar.setOnItemSelectedListener { menuItem ->
             when(menuItem.itemId) {
                 R.id.bottom_dashboard -> replaceFragment(DashboardFragment())
@@ -64,11 +55,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit()
     }
 
-    // In each Fragment, you could notify the activity to hide the loading indicator
-    override fun onResume() {
-        super.onResume()
-        hideLoading()
-    }
     private fun observeKeyboardVisibility() {
         rootView.viewTreeObserver.addOnGlobalLayoutListener {
             val r = Rect()

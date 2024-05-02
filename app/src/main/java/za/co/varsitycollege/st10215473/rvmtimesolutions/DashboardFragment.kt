@@ -17,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -39,6 +40,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -113,6 +116,7 @@ class DashboardFragment : Fragment() {
         setBarChartData(barChart)
         return view
     }
+
 
     private fun setPieChartData(query: Query){
         pieChart.clear()

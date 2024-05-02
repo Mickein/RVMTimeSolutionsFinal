@@ -9,17 +9,16 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/BeginImage"
         android:layout_width="275dp"
         android:layout_height="403dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.573"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.246"
+        app:layout_constraintVertical_bias="0.251"
         app:srcCompat="@drawable/beginpage" />
-
 
     <TextView
         android:id="@+id/txtBeginHeader"
