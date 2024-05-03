@@ -50,7 +50,14 @@ class RegisterPage : AppCompatActivity() {
             val email = emailEdit.text.toString()
             val password = passwordEdit.text.toString()
             val confirm = confirmPassword.text.toString()
-            if(password != confirm){
+
+            if(password.length < 8){
+
+                passwordEdit.setText("")
+                passwordEdit.error = "Password must be min 8 characters!"
+                confirmPassword.setText("")
+            }
+            else if(password != confirm){
                 passwordEdit.setText("")
                 confirmPassword.setText("")
                 Toast.makeText(this, "Password does not match!", Toast.LENGTH_SHORT).show()
