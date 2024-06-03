@@ -1,36 +1,36 @@
 package za.co.varsitycollege.st10215473.rvmtimesolutions
 
-import android.app.Activity
+import android.Manifest
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
+import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
-import java.text.SimpleDateFormat
+import java.io.File
 import java.util.Calendar
-import java.util.Locale
-
-
 
 class AddFragment : Fragment() {
-    private lateinit var dateText: EditText
     private lateinit var categoryText: EditText
     private lateinit var descriptionText: EditText
     private lateinit var minGoalText: EditText
@@ -43,12 +43,14 @@ class AddFragment : Fragment() {
     private lateinit var clientNameText: EditText
     private lateinit var addImage: ImageView
     private var uri: Uri? = null
-
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var dateButton: Button
     private lateinit var startTimeButton: Button
     private lateinit var endTimeButton: Button
     private var addedAnImage: Boolean = false
+    private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
+    private val CAMERA_PERMISSION_REQUEST_CODE = 100
+    private val CAMERA_REQUEST_CODE = 101
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,9 +85,24 @@ class AddFragment : Fragment() {
             }
         }
 
+        uri = createUri()//Some code by CodingZest on Youtube: https://www.youtube.com/watch?v=9XSlbZN1yFg&t=761s
+        registerPictureLauncher()//Some code by CodingZest on Youtube: https://www.youtube.com/watch?v=9XSlbZN1yFg&t=761s
+
         addImage.setOnClickListener{
             addedAnImage = true
-            pickImage.launch("image/*")
+            val options = arrayOf("Take Photo", "Choose from Gallery")
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Select Option")
+            builder.setItems(options) { dialogInterface: DialogInterface, which: Int ->
+                when (which) {
+                    0 -> {
+                        checkCameraPermissionAndOpen()//Some code by CodingZest on Youtube: https://www.youtube.com/watch?v=9XSlbZN1yFg&t=761s
+                    }
+                    1 -> pickImage.launch("image/*")
+                }
+                dialogInterface.dismiss()
+            }
+            builder.show()
         }
 
         dateButton.setOnClickListener {
@@ -101,6 +118,52 @@ class AddFragment : Fragment() {
             captureTimesheet()
         }
         return view
+    }
+    private fun createUri(): Uri{
+        val imageFile = File(requireActivity().application.filesDir,"camera_photo.jpg")
+        return FileProvider.getUriForFile(
+            requireContext().applicationContext,
+            "za.co.varsitycollege.st10215473.rvmtimesolutions.fileprovider",
+            imageFile
+        )
+    }
+
+    private fun registerPictureLauncher(){
+        takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()){isSuccess ->
+            try {
+                if(isSuccess){
+                    addImage.setImageURI(null)
+                    addImage.setImageURI(uri)
+                }
+            }catch(e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+    private fun checkCameraPermissionAndOpen(){
+        if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        }
+        else{
+            takePictureLauncher.launch(uri)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == CAMERA_PERMISSION_REQUEST_CODE){
+            if(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                takePictureLauncher.launch(uri)
+            }
+            else{
+                Toast.makeText(context, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -120,6 +183,7 @@ class AddFragment : Fragment() {
         val date = dateButton.text.toString()
         val startTime = startTimeButton.text.toString()
         val endTime = endTimeButton.text.toString()
+        val timestamp = ServerValue.TIMESTAMP
 
         if(name.isEmpty()){
             projectNameText.error = "Add a Project Name"
@@ -158,10 +222,10 @@ class AddFragment : Fragment() {
                         task.metadata!!.reference!!.downloadUrl
                             .addOnSuccessListener {url ->
                                 val imgUrl = url.toString()
-                                timesheets = Timesheets(timesheetId, name, date, startTime, endTime, category, description, minHour, maxHour, imgUrl, client, uid)
+                                timesheets = Timesheets(category, client, date, description, endTime, timesheetId, imgUrl, maxHour, minHour, name, startTime,timestamp ,uid)
                                 firebaseRef.child(timesheetId).setValue(timesheets)
                                     .addOnCompleteListener {
-                                        Toast.makeText(context, "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(requireContext(), "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
 
                                         projectNameText.setText("")
                                         categoryText.setText("")
@@ -179,10 +243,10 @@ class AddFragment : Fragment() {
             }
         }
         else{
-            timesheets = Timesheets(timesheetId, name, date, startTime, endTime, category, description, minHour, maxHour, "", client, uid)
+            timesheets = Timesheets(category, client, date, description, endTime, timesheetId, "", maxHour, minHour, name, startTime,timestamp, uid)
             firebaseRef.child(timesheetId).setValue(timesheets)
                 .addOnCompleteListener {
-                    Toast.makeText(context, "Timesheet Captured Failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Timesheet Captured Successfully", Toast.LENGTH_SHORT).show()
                 }
             view
         }
@@ -258,5 +322,4 @@ class AddFragment : Fragment() {
         }
         datePickerDialog.show()
     }
-
 }

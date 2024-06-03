@@ -27,6 +27,7 @@ class RegisterPage : AppCompatActivity() {
     private lateinit var registerButton: TextView
     private lateinit var authReg: FirebaseAuth
     private lateinit var firebaseRef: DatabaseReference
+    private lateinit var confirmPassword: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_page)
@@ -36,6 +37,7 @@ class RegisterPage : AppCompatActivity() {
         surname = findViewById(R.id.edtRegisterSurname)
         emailEdit = findViewById(R.id.edtRegisterEmail)
         passwordEdit = findViewById(R.id.edtRegisterPassword)
+        confirmPassword = findViewById(R.id.edtRegisterConfirmPassword)
         registerButton = findViewById(R.id.txtRegister)
         firebaseRef = FirebaseDatabase.getInstance().getReference("Profile")
 
@@ -47,8 +49,22 @@ class RegisterPage : AppCompatActivity() {
             val surname = surname.text.toString()
             val email = emailEdit.text.toString()
             val password = passwordEdit.text.toString()
+            val confirm = confirmPassword.text.toString()
 
-            RegisterUser(email, password, name, surname)
+            if(password.length < 8){
+
+                passwordEdit.setText("")
+                passwordEdit.error = "Password must be min 8 characters!"
+                confirmPassword.setText("")
+            }
+            else if(password != confirm){
+                passwordEdit.setText("")
+                confirmPassword.setText("")
+                Toast.makeText(this, "Password does not match!", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                RegisterUser(email, password, name, surname)
+            }
         }
     }
     fun openLoginPage()
@@ -70,6 +86,7 @@ class RegisterPage : AppCompatActivity() {
                     val user = authReg.currentUser
                     val uid = user?.uid
                     if(user != null){
+
                         val userProfile = Profile(uid, name, surname, email, "", "", "", "")
                         addUserToFirebase(userProfile, user)
                     }

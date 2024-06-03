@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">RVMTimeSolutions</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <string-array name="sortBy">
+        <item>All Entries</item>
+        <item>Project Name</item>
+        <item>Category</item>
+        <item>Newest to Oldest</item>
+        <item>Oldest to Newest</item>
+        <item>Date</item>
+    </string-array>
 
 </resources>

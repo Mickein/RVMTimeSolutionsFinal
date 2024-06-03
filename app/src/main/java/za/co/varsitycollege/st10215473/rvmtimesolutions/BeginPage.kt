@@ -2,20 +2,28 @@ package za.co.varsitycollege.st10215473.rvmtimesolutions
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class BeginPage : AppCompatActivity() {
     lateinit var openLog: TextView
+    lateinit var imgclick: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.begin_page)
 
+        imgclick = findViewById(R.id.BeginImage)
+        imgclick.setOnClickListener {
+            Toast.makeText(baseContext, "COMING SOON", Toast.LENGTH_SHORT,).show()
+        }
+
         openLoginPage()
+
     }
 
     fun openLoginPage()

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "56221013198",
+    "project_id": "rvmtimesolutions",
+    "storage_bucket": "rvmtimesolutions.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56221013198:android:df39944d98017b9fa56c9f",
+        "android_client_info": {
+          "package_name": "za.co.varsitycollege.st10215473.rvmtimesolutions"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ-P8sb9JBZwFTXHcfVE3MXHofg_Ovpjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

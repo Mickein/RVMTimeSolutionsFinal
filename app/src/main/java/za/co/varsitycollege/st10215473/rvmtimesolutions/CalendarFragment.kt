@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -21,8 +22,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter.CalendarAdapter
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.CalendarEvents
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
@@ -43,13 +42,19 @@ class CalendarFragment : Fragment() {
     private lateinit var firebaseRef: DatabaseReference
     private lateinit var calendarEventsList: ArrayList<CalendarEvents>
     private var binding: FragmentCalendarBinding? = null
+    private lateinit var spin: Spinner
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val addEventView = inflater.inflate(R.layout.add_event, container, false)
+        spin = addEventView.findViewById(R.id.spinnerClientName)
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
+        val items = arrayOf("Coming Soon")
+        val adapter = ArrayAdapter<String>(requireContext(), R.layout.dropdown_item, items)
+        spin.setAdapter(adapter)
 
         val binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
@@ -68,23 +73,15 @@ class CalendarFragment : Fragment() {
 
         fetchData()
 
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
+        linear.addItemDecoration(SpacesItemDecoration(spacingInPixels))
+
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         linear.layoutManager = linearLayoutManager
 
-        loadData()
         return view
     }
-    private fun loadData() {
-        // Show loading in Activity
-        (activity as MainActivity).showLoading()
 
-        // Simulate data loading
-        lifecycleScope.launch {
-            delay(2000) // Simulate network delay
-            // Hide loading after data is ready
-            (activity as MainActivity).hideLoading()
-        }
-    }
 
 
     private fun showAddEventDialog() {
@@ -145,6 +142,10 @@ class CalendarFragment : Fragment() {
     }
 
     private fun fetchData(){
+        if (!isAdded) {
+            // Fragment is not attached, handle appropriately
+            return
+        }
         val currentUser = FirebaseAuth.getInstance().currentUser
         val uid = currentUser?.uid
         firebaseRef.orderByChild("userId").equalTo(uid).addValueEventListener(object: ValueEventListener{
@@ -157,8 +158,6 @@ class CalendarFragment : Fragment() {
                     }
                 }
                 val calendarAdapter = CalendarAdapter(calendarEventsList)
-                val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
-                linear.addItemDecoration(SpacesItemDecoration(spacingInPixels))
                 linear.adapter = calendarAdapter
             }
 
@@ -168,34 +167,6 @@ class CalendarFragment : Fragment() {
 
         })
     }
-
-    /*fun addEvent(hour: Int, minute: Int, name: String) {
-        val modifiedHour = getHourAmPm(hour)
-        val amPm = if (hour > 11) "PM" else "AM"
-        val numberFormat = DecimalFormat("00")
-
-
-        val cardView = layoutInflater.inflate(R.layout.event_details, null)
-        val eventNameTextView = cardView.findViewById<TextView>(R.id.exame_name_txt)
-        val eventDateTextView = cardView.findViewById<TextView>(R.id.event_date_txt)
-        val eventTimeTextView = cardView.findViewById<TextView>(R.id.event_time_txt)
-
-        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val formattedDate = sdf.format(selectedDate)
-
-        eventNameTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        eventNameTextView.text = "Event Name: $name"
-
-        // Set the event date
-        eventDateTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        eventDateTextView.text = "Event Date: $formattedDate"
-
-        // Set the event time
-        eventTimeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        eventTimeTextView.text = "Event Time: ${numberFormat.format(modifiedHour)}:${numberFormat.format(minute)} $amPm"
-
-        linear.addView(cardView)
-    }*/
 
     private fun getHourAmPm(hour: Int): Int {
         var modifiedHour = if (hour > 11) hour - 12 else hour

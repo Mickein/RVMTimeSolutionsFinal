@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
+        android:layout_width="342dp"
+        android:layout_height="490dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginEnd="9dp"
+        android:paddingLeft="10dp"
+        app:cardBackgroundColor="#9A3D3D"
+        app:cardCornerRadius="20dp"
+        app:cardUseCompatPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#C8B37D"
+            android:paddingLeft="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2">
+
+            <TextView
+                android:id="@+id/txtViewDate"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="19dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toTopOf="@+id/txtViewStartTime"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView29"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewDescription" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="26dp"
+                android:text="Min Hours Goal:"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewMaxGoal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="Start Time:"
+                app:layout_constraintBottom_toTopOf="@+id/textView30"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewStartTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="66dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="20dp"
+                android:text="Client:"
+                app:layout_constraintBottom_toTopOf="@+id/textView27"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewClient"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="Category:"
+                app:layout_constraintBottom_toTopOf="@+id/textView28"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewCategory"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="31dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="Description:"
+                app:layout_constraintBottom_toTopOf="@+id/textView29"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="73dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="Date:"
+                app:layout_constraintBottom_toTopOf="@+id/textView25"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="43dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="End Time:"
+                app:layout_constraintBottom_toTopOf="@+id/textView31"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewEndTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="Min Hours Goal:"
+                app:layout_constraintBottom_toTopOf="@+id/textView24"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewMinGoal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView30" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="102dp"
+                android:layout_marginEnd="17dp"
+                android:layout_marginBottom="18dp"
+                android:text="Project Name:"
+                app:layout_constraintBottom_toTopOf="@+id/textView26"
+                app:layout_constraintEnd_toStartOf="@+id/txtViewProjectName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtViewProjectName"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="102dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="18dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toTopOf="@+id/txtViewClient"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtViewClient"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="20dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toTopOf="@+id/txtViewCategory"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView26"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewProjectName" />
+
+            <TextView
+                android:id="@+id/txtViewCategory"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="20dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toTopOf="@+id/txtViewDescription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView27"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewClient" />
+
+            <TextView
+                android:id="@+id/txtViewDescription"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="18dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toTopOf="@+id/txtViewDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView28"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewCategory" />
+
+            <TextView
+                android:id="@+id/txtViewEndTime"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="19dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toTopOf="@+id/txtViewMinGoal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView30"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewStartTime" />
+
+            <TextView
+                android:id="@+id/txtViewMinGoal"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="19dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toTopOf="@+id/txtViewMaxGoal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView31"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewEndTime" />
+
+            <TextView
+                android:id="@+id/txtViewMaxGoal"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="26dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView24"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewMinGoal" />
+
+            <TextView
+                android:id="@+id/txtViewStartTime"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginBottom="19dp"
+                android:text="TextView"
+                android:textColor="#F3EDED"
+                app:layout_constraintBottom_toTopOf="@+id/txtViewEndTime"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView25"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewDate" />
+
+            <ImageView
+                android:id="@+id/imgViewPhoto"
+                android:layout_width="100dp"
+                android:layout_height="79dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.454"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.041"
+                app:srcCompat="@drawable/baseline_image_24" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
