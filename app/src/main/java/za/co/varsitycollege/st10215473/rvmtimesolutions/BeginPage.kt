@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
+//Testing video call
 class BeginPage : AppCompatActivity() {
     lateinit var openLog: TextView
     lateinit var imgclick: ImageView
