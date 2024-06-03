@@ -30,6 +30,7 @@ import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
 import java.io.File
 import java.util.Calendar
 
+//Testing video call
 class AddFragment : Fragment() {
     private lateinit var categoryText: EditText
     private lateinit var descriptionText: EditText
