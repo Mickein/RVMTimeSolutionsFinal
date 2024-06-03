@@ -81,7 +81,7 @@ class DashboardFragment : Fragment() {
         endDateButton = view.findViewById(R.id.btnEndDatePicker)
         startDateButton = view.findViewById(R.id.btnStartDatePicker)
         pieChart = view.findViewById(R.id.pie_chart)
-        //Test
+        //Test2
         startDateButton.text = getTodaysDate()
         endDateButton.text = getTodaysDate()
 
