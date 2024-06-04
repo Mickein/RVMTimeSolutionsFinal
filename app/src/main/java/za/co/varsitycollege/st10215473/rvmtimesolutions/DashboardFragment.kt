@@ -374,6 +374,7 @@ class DashboardFragment : Fragment() {
                                 }
 
 
+
                                 if (day != null) {
                                     val hoursSpent = calculateHoursSpent(startTime, endTime).toFloat()
                                     totalHoursWorked[day] = totalHoursWorked.getOrDefault(day, 0f) + hoursSpent
