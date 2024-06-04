@@ -119,7 +119,6 @@ class DashboardFragment : Fragment() {
         return view
     }
 
-
     private fun setPieChartData(query: Query){
         pieChart.clear()
         pieChart.invalidate()
