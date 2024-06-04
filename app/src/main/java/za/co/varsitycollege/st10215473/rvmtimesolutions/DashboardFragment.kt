@@ -57,7 +57,7 @@ class DashboardFragment : Fragment() {
     private lateinit var firebaseRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var query: Query
-    private lateinit var queryPeriod: Query
+    private lateinit var queryBarChart: Query
     private lateinit var startDatePickerDialog: DatePickerDialog
     private lateinit var endDatePickerDialog: DatePickerDialog
     private lateinit var startDateButton: Button
@@ -81,12 +81,15 @@ class DashboardFragment : Fragment() {
         endDateButton = view.findViewById(R.id.btnEndDatePicker)
         startDateButton = view.findViewById(R.id.btnStartDatePicker)
         pieChart = view.findViewById(R.id.pie_chart)
-        //Test3
+        barChart = view.findViewById(R.id.bar_chart)
+
         startDateButton.text = getTodaysDate()
         endDateButton.text = getTodaysDate()
 
         query = firebaseRef.orderByChild("userId").equalTo(userId)
         setPieChartData(query)
+
+        queryBarChart = firebaseRef.orderByChild("userId").equalTo(userId)
 
         viewAllButton.setOnClickListener {
             query = firebaseRef.orderByChild("userId").equalTo(userId)
@@ -111,9 +114,8 @@ class DashboardFragment : Fragment() {
             setPieChartData(query)
         }
 
-        val barChart = view.findViewById<BarChart>(R.id.bar_chart)
-        setUpBarChart(barChart)
-        setBarChartData(barChart)
+        //val barChart = view.findViewById<BarChart>(R.id.bar_chart)
+        setBarChartData(queryBarChart)
         return view
     }
 
@@ -216,7 +218,7 @@ class DashboardFragment : Fragment() {
         pieChart.invalidate()
     }
 
-    private fun setUpBarChart(barChart: BarChart) {
+    private fun setUpBarChart(totalHoursWorked: Map<String, Float>, minGoals: Map<String, Float>, maxGoals: Map<String, Float>) {
         barChart.setDrawBarShadow(false)
         barChart.setDrawValueAboveBar(true)
         barChart.description.isEnabled = false
@@ -226,10 +228,182 @@ class DashboardFragment : Fragment() {
         barChart.setTouchEnabled(false)
         barChart.animateY(1000)
         barChart.setDrawGridBackground(false)
+
+        val days = arrayOf("Mon", "Tues", "Wed", "Thurs", "Fri")
+
+        val values1 = ArrayList<BarEntry>()
+        val values2 = ArrayList<BarEntry>()
+        val values3 = ArrayList<BarEntry>()
+
+        for (i in days.indices) {
+            val day = days[i]
+            values1.add(BarEntry(i.toFloat(), totalHoursWorked[day] ?: 0f))
+            values2.add(BarEntry(i.toFloat(), maxGoals[day] ?: 0f))
+            values3.add(BarEntry(i.toFloat(), minGoals[day] ?: 0f))
+        }
+
+        val set1 = BarDataSet(values1, "Hours Worked")
+        set1.color = Color.parseColor("#A5BEEF")
+
+        val set2 = BarDataSet(values2, "Max Hours Goal")
+        set2.color = Color.parseColor("#3F68BA")
+
+        val set3 = BarDataSet(values3, "Min Hours Goal")
+        set3.color = Color.parseColor("#7B9BDA")
+
+        val data = BarData(set1, set2, set3)
+        data.barWidth = 0.16f
+
+        barChart.data = data
+
+        // Set labels for X-axis
+        val xAxis = barChart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(days)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.setCenterAxisLabels(true)
+
+        // Center the group of bars
+        val groupSpace = 0.4f
+        val barSpace = 0.04f
+        val barWidth = 0.16f
+        data.barWidth = barWidth
+        barChart.groupBars(0f, groupSpace, barSpace)
+
+        // Adjust chart padding
+        barChart.setExtraOffsets(50f, 0f, 50f, 30f) // Add right padding
+
+        // Set the maximum value for the y-axis
+        barChart.axisLeft.axisMaximum = 12f
+        barChart.axisRight.axisMaximum = 12f
+
+        // Set the viewport to display all data points
+        val visibleRange = days.size + groupSpace * 2 + barSpace * (days.size - 1)
+        barChart.setVisibleXRangeMinimum(visibleRange)
+        barChart.setVisibleXRangeMaximum(visibleRange)
+        barChart.moveViewToX(0f) // Start from the beginning of the chart
+
+        // Set chart title
+        barChart.description.isEnabled = true
+        barChart.description.text = "Total hours worked each Day with the Min and Max Goals\n"
+        barChart.description.textSize = 12f
+        barChart.description.textColor = Color.BLACK
+        barChart.description.textAlign = Paint.Align.CENTER
+        barChart.description.setPosition(600f, 25f)
+
+        barChart.animateY(1500, Easing.EaseInOutQuart)
+
+        barChart.invalidate()
+
+        // Enable legend
+        val legend = barChart.legend
+        legend.isEnabled = true
+
+        // Customize legend
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+        legend.setDrawInside(false)
+
+        // Define legend entries
+        val greenEntry = LegendEntry().apply {
+            formColor = Color.parseColor("#A5BEEF")
+            label = "Hours Worked"
+        }
+
+        val redEntry = LegendEntry().apply {
+            formColor = Color.parseColor("#3F68BA")
+            label = "Max Hours Goal"
+        }
+
+        val blueEntry = LegendEntry().apply {
+            formColor = Color.parseColor("#7B9BDA")
+            label = "Min Hours Goal"
+        }
+
+        // Set legend entries
+        legend.setCustom(arrayOf(greenEntry, redEntry, blueEntry))
     }
 
-    private fun setBarChartData(barChart: BarChart) {
-        val days = arrayOf("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun")
+
+
+    private fun setBarChartData(query: Query) {
+        barChart.clear()
+        barChart.invalidate()
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+
+        query.addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val totalHoursWorked = mutableMapOf<String, Float>()
+                    val minGoals = mutableMapOf<String, Float>()
+                    val maxGoals = mutableMapOf<String, Float>()
+
+                    for (day in arrayOf("Mon", "Tues", "Wed", "Thurs", "Fri")) {
+                        totalHoursWorked[day] = 0f
+                        minGoals[day] = Float.MAX_VALUE
+                        maxGoals[day] = 0f
+                    }
+
+                    val format = SimpleDateFormat("MMM d yyyy", Locale.getDefault())
+                    val calendar = Calendar.getInstance()
+
+                    for (dataSnapshot in snapshot.children) {
+                        val dateStr = dataSnapshot.child("date").value.toString()
+                        val startTime = dataSnapshot.child("startTime").value.toString()
+                        val endTime = dataSnapshot.child("endTime").value.toString()
+                        val userId = dataSnapshot.child("userId").value.toString()
+                        val minGoal = dataSnapshot.child("minHourGoal").value.toString().toFloat()
+                        val maxGoal = dataSnapshot.child("maxHourGoal").value.toString().toFloat()
+
+                        if (userId == uid) {
+                            try {
+                                val date = format.parse(dateStr)
+                                calendar.time = date
+                                val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+                                val day = when (dayOfWeek) {
+                                    Calendar.MONDAY -> "Mon"
+                                    Calendar.TUESDAY -> "Tues"
+                                    Calendar.WEDNESDAY -> "Wed"
+                                    Calendar.THURSDAY -> "Thurs"
+                                    Calendar.FRIDAY -> "Fri"
+                                    else -> null
+                                }
+
+                                if (day != null) {
+                                    val hoursSpent = calculateHoursSpent(startTime, endTime).toFloat()
+                                    totalHoursWorked[day] = totalHoursWorked.getOrDefault(day, 0f) + hoursSpent
+                                    minGoals[day] = minGoals.getOrDefault(day, Float.MAX_VALUE).coerceAtMost(minGoal)
+                                    maxGoals[day] = maxGoals.getOrDefault(day, 0f).coerceAtLeast(maxGoal)
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                    for (day in minGoals.keys) {
+                        if (minGoals[day] == Float.MAX_VALUE) {
+                            minGoals[day] = 0f
+                        }
+                    }
+                    // Call a method to set the bar chart data
+                    setUpBarChart(totalHoursWorked, minGoals, maxGoals)
+
+                }else {
+                    Log.d("DashboardFragment", "No data found")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("DashboardFragment", "Database error: ${error.message}")
+            }
+
+        })
+
+       /*val days = arrayOf("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun")
         val entries1 = floatArrayOf(5f, 3f, 4f, 2f, 1f, 6f, 2f) // Adjusted entries to fit the range
         val entries2 = floatArrayOf(8f, 7f, 8f, 4f, 7f, 8f, 3f) // Adjusted entries to fit the range
         val entries3 = floatArrayOf(3f, 2f, 1f, 6f, 2f, 9f, 7f) // Adjusted entries to fit the range
@@ -326,7 +500,7 @@ class DashboardFragment : Fragment() {
         }
 
         // Set legend entries
-        legend.setCustom(arrayOf(greenEntry, redEntry, blueEntry))
+        legend.setCustom(arrayOf(greenEntry, redEntry, blueEntry))*/
     }
 
     private fun initStartDatePicker() {
