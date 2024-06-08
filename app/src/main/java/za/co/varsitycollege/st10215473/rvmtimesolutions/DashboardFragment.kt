@@ -1,5 +1,6 @@
 package za.co.varsitycollege.st10215473.rvmtimesolutions
 
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Color
@@ -18,6 +19,8 @@ import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -42,7 +45,9 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter.ProgressBarAdapter
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -58,6 +63,7 @@ class DashboardFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var query: Query
     private lateinit var queryBarChart: Query
+    private lateinit var queryProgressBar: Query
     private lateinit var startDatePickerDialog: DatePickerDialog
     private lateinit var endDatePickerDialog: DatePickerDialog
     private lateinit var barStartPickerDialog: DatePickerDialog
@@ -70,6 +76,8 @@ class DashboardFragment : Fragment() {
     private lateinit var viewPeriodButton: Button
     private lateinit var barViewPeriod: Button
     private lateinit var barViewCurrentWeek: Button
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var timesheetList: ArrayList<Timesheets>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,11 +100,18 @@ class DashboardFragment : Fragment() {
         barEndDate = view.findViewById(R.id.btnBarGraphEnd)
         barViewPeriod = view.findViewById(R.id.btnBarView)
         barViewCurrentWeek = view.findViewById(R.id.btnViewCurrentWeek)
+        recyclerView = view.findViewById(R.id.progressBarRecycler)
+        timesheetList = arrayListOf()
 
         barStartDate.text = getTodaysDate()
         barEndDate.text = getTodaysDate()
         startDateButton.text = getTodaysDate()
         endDateButton.text = getTodaysDate()
+
+        //Some code by Indently on Youtube: https://www.youtube.com/watch?v=xU-Cc41DfTg
+        /*progressBar.max = 4
+        val currentProgress = 2
+        ObjectAnimator.ofInt(progressBar, "progress", currentProgress).setDuration(2000).start()*/
 
         query = firebaseRef.orderByChild("userId").equalTo(userId)
         setPieChartData(query)
@@ -159,7 +174,57 @@ class DashboardFragment : Fragment() {
             setBarChartData(queryBarChart)
         }
 
+        val (startDate, endDate) = getPastMonth()
+
+        queryProgressBar = firebaseRef
+            .orderByChild("userId")
+            .equalTo(userId)
+        fetchProgressBarData(queryProgressBar)
+
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
+        recyclerView.addItemDecoration(SpacesItemDecoration(spacingInPixels))
+
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = linearLayoutManager
+
         return view
+    }
+
+    private fun calculateMarkerPosition(progressBarWidth: Int, value: Int): Int {
+        // Assuming the ProgressBar's max is 100
+        val progressRange = 100
+        val position = (value.toFloat() / progressRange) * progressBarWidth
+        return position.toInt()
+    }
+
+    private fun fetchProgressBarData(query: Query){
+        if (!isAdded) {
+            return
+        }
+        timesheetList.clear()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+
+        query.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()) {
+                    for (timesheetSnapshot in snapshot.children) {
+                        val timesheet = timesheetSnapshot.getValue(Timesheets::class.java)
+                        val userId = timesheetSnapshot.child("userId").value.toString()
+                        if (userId == uid) {
+                            timesheet?.let {
+                                timesheetList.add(it)
+                            }
+                        }
+                    }
+                    val progressAdapter = ProgressBarAdapter(timesheetList)
+                    recyclerView.adapter = progressAdapter
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
     private fun setPieChartData(query: Query){
@@ -196,7 +261,6 @@ class DashboardFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
 
             }
-
         })
     }
 
@@ -462,6 +526,18 @@ class DashboardFragment : Fragment() {
         val dateFormat = SimpleDateFormat("MMM d yyyy", Locale.getDefault())
         val startFormatted = dateFormat.format(startOfWeek).uppercase(Locale.getDefault())
         val endFormatted = dateFormat.format(endOfWeek).uppercase(Locale.getDefault())
+        return Pair(startFormatted, endFormatted)
+    }
+
+    private fun getPastMonth(): Pair<String, String>{
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, -1)
+        val startDate = calendar.time
+        val endDate = Calendar.getInstance().time
+
+        val dateFormat = SimpleDateFormat("MMM d yyyy", Locale.getDefault())
+        val startFormatted = dateFormat.format(startDate).uppercase(Locale.getDefault())
+        val endFormatted = dateFormat.format(endDate).uppercase(Locale.getDefault())
         return Pair(startFormatted, endFormatted)
     }
 
