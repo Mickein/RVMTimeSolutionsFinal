@@ -108,11 +108,6 @@ class DashboardFragment : Fragment() {
         startDateButton.text = getTodaysDate()
         endDateButton.text = getTodaysDate()
 
-        //Some code by Indently on Youtube: https://www.youtube.com/watch?v=xU-Cc41DfTg
-        /*progressBar.max = 4
-        val currentProgress = 2
-        ObjectAnimator.ofInt(progressBar, "progress", currentProgress).setDuration(2000).start()*/
-
         query = firebaseRef.orderByChild("userId").equalTo(userId)
         setPieChartData(query)
 
@@ -174,8 +169,6 @@ class DashboardFragment : Fragment() {
             setBarChartData(queryBarChart)
         }
 
-        val (startDate, endDate) = getPastMonth()
-
         queryProgressBar = firebaseRef
             .orderByChild("userId")
             .equalTo(userId)
@@ -188,13 +181,6 @@ class DashboardFragment : Fragment() {
         recyclerView.layoutManager = linearLayoutManager
 
         return view
-    }
-
-    private fun calculateMarkerPosition(progressBarWidth: Int, value: Int): Int {
-        // Assuming the ProgressBar's max is 100
-        val progressRange = 100
-        val position = (value.toFloat() / progressRange) * progressBarWidth
-        return position.toInt()
     }
 
     private fun fetchProgressBarData(query: Query){
