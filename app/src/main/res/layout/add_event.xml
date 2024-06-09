@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/roundstyle"
-    android:backgroundTint="#00FFFFFF">
+    android:backgroundTint="@android:color/transparent">
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
-        android:layout_width="match_parent"
-        android:layout_height="218dp"
-        app:cardBackgroundColor="#111111"
+        android:layout_width="356dp"
+        android:layout_height="351dp"
+        app:cardBackgroundColor="#525659"
         app:cardCornerRadius="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
             <EditText
                 android:id="@+id/edtEventName"
                 android:layout_width="191dp"
-                android:layout_height="58dp"
+                android:layout_height="45dp"
                 android:background="@drawable/roundstyle"
                 android:backgroundTint="#7F8487"
                 android:ems="10"
@@ -37,51 +37,105 @@
                 android:textColorHint="#FAF7F7"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.239" />
+                app:layout_constraintVertical_bias="0.052" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/btnAddTime"
-                android:layout_width="95dp"
-                android:layout_height="41dp"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="@color/blue"
+                style="?android:spinnerStyle"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center|center_horizontal"
+                android:backgroundTint="#7F8487"
+                android:onClick="openTimePicker"
+                android:text="12 : 12"
+                android:textColor="#0E0E0E"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtEventName"
-                app:layout_constraintVertical_bias="0.962"
-                app:srcCompat="@drawable/addtime" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.745" />
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="40dp"
-                android:layout_height="59dp"
+                android:layout_height="47dp"
 
-                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.503"
                 app:srcCompat="@drawable/rvm_logo" />
 
-            <Spinner
-                android:id="@+id/spinnerClientName"
-                android:layout_width="191dp"
-                android:layout_height="58dp"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#7F8487"
-                android:textAlignment="center"
-                android:textColor="#F6F5F5"
-                android:textColorHint="#F6F5F5"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="194dp"
+                android:layout_height="45dp"
+                android:layout_gravity="top|center_horizontal"
+                android:hint="Clients"
+                app:boxBackgroundColor="#7F8487"
+                app:boxBackgroundMode="filled"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.352"
+                app:startIconDrawable="@drawable/clients">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteTextView"
+                    android:layout_width="192dp"
+                    android:layout_height="53dp"
+                    android:layout_weight="1"
+                    android:inputType="none"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchTakingLeave"
+                android:layout_width="133dp"
+                android:layout_height="45dp"
+                android:text="Taking Leave"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.662" />
+                app:layout_constraintVertical_bias="0.552" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*optional"
+                android:textColor="#F8F4F4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.27"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.268" />
+
+            <Button
+                android:id="@+id/btnAddEvent"
+                android:layout_width="161dp"
+                android:layout_height="46dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@color/blue"
+                android:text="Add Event"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.947" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -42,6 +42,7 @@ class ProgressBarAdapter(private var timesheetList: java.util.ArrayList<Timeshee
                         txtMaxHours.text = "${maxGoalHours}hrs"
                         txtHoursSpent.text = "${hoursSpent}hrs"
 
+                        //Some code by Indently on Youtube: https://www.youtube.com/watch?v=xU-Cc41DfTg
                         progressBar.max = maxGoalHours
                         progressBar.progress = hoursSpent.toInt()
 
