@@ -48,7 +48,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="26dp"
-                android:text="Min Hours Goal:"
+                android:text="Max Hours Goal:"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtViewMaxGoal"
                 app:layout_constraintStart_toStartOf="parent"
