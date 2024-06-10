@@ -11,7 +11,7 @@ import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-
+//Veron was here again
 class LoginPage : AppCompatActivity() {
     //variable for going to dashboard page if user has a registered account
     lateinit var openDash: TextView
