@@ -97,11 +97,11 @@
         android:textColor="@color/black"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView12"
-        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="@+id/profilePicture"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/profilePicture"
         android:layout_width="130dp"
         android:layout_height="121dp"
         android:layout_gravity="top|center_horizontal"

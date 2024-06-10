@@ -35,9 +35,8 @@
         android:layout_marginTop="220dp"
         app:cardCornerRadius="30dp">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,7 +64,6 @@
 
                     android:clickable="true"
                     android:drawableLeft="@drawable/baseline_personicon"
-                    android:drawableRight="@drawable/baseline_edit"
                     android:drawablePadding="30dp"
                     android:ems="10"
                     android:fontFamily="@font/nunito_sans"
@@ -93,7 +91,6 @@
                     android:layout_marginTop="10dp"
                     android:clickable="true"
                     android:drawableLeft="@drawable/baseline_email"
-                    android:drawableRight="@drawable/baseline_edit"
                     android:drawablePadding="30dp"
                     android:ems="10"
                     android:fontFamily="@font/nunito_sans"
@@ -101,54 +98,27 @@
                     android:padding="10dp"
                     android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/txtPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:clickable="false"
-                    android:fontFamily="@font/ubuntu"
-                    android:text="Password:"
-                    android:paddingLeft="20sp"
-                    android:textSize="25sp" />
-
-                <EditText
-                    android:id="@+id/edtPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="top|center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:drawableLeft="@drawable/baseline_lock_24"
-                    android:drawableRight="@drawable/baseline_edit"
-                    android:drawablePadding="30dp"
-                    android:ems="10"
-                    android:fontFamily="@font/nunito_sans"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textSize="20sp" />
-
-
                 <Button
                     android:id="@+id/btnLogOut"
                     android:layout_width="259dp"
                     android:layout_height="62dp"
                     android:layout_gravity="top|center_horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="100dp"
                     android:backgroundTint="@color/black"
                     android:fontFamily="@font/ubuntu"
                     android:text="Logout"
                     android:textColor="#C83939"
                     android:textSize="34sp" />
+
             </LinearLayout>
-        </ScrollView>
+
 
 
     </androidx.cardview.widget.CardView>
 
 
-    <ImageView
-        android:id="@+id/imageView6"
+    <za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.CircularImageView
+        android:id="@+id/profilePicture"
         android:layout_width="130dp"
         android:layout_height="121dp"
         android:layout_gravity="top|center_horizontal"
@@ -157,7 +127,7 @@
         android:src="@drawable/profile_placeholder" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/AddProfilePicture"
         android:layout_width="41dp"
         android:layout_height="34dp"
         android:layout_gravity="top|center"
