@@ -39,11 +39,13 @@ class TimesheetAdapter(private val timesheetList: java.util.ArrayList<Timesheets
                 if(!currentItem.image.isNullOrEmpty()){
                     txtHeading.text = currentItem.name
                     txtNameCardView.text = currentItem.clientName
+                    txtDateCardView.text = currentItem.date
                     Picasso.get().load(currentItem.image).into(imgCardView)
                 }
                 else{
                     txtHeading.text = currentItem.name
                     txtNameCardView.text = currentItem.clientName
+                    txtDateCardView.text = currentItem.date
                     imgCardView.setImageResource(R.drawable.default_photo_timesheet)
                 }
             }

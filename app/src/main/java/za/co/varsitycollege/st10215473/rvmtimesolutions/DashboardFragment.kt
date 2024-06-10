@@ -1,5 +1,6 @@
 package za.co.varsitycollege.st10215473.rvmtimesolutions
 
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Color
@@ -18,6 +19,8 @@ import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -42,7 +45,9 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Adapter.ProgressBarAdapter
 import za.co.varsitycollege.st10215473.rvmtimesolutions.Data.Timesheets
+import za.co.varsitycollege.st10215473.rvmtimesolutions.Decorator.SpacesItemDecoration
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -57,13 +62,22 @@ class DashboardFragment : Fragment() {
     private lateinit var firebaseRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var query: Query
-    private lateinit var queryPeriod: Query
+    private lateinit var queryBarChart: Query
+    private lateinit var queryProgressBar: Query
     private lateinit var startDatePickerDialog: DatePickerDialog
     private lateinit var endDatePickerDialog: DatePickerDialog
+    private lateinit var barStartPickerDialog: DatePickerDialog
+    private lateinit var barEndPickerDialog: DatePickerDialog
     private lateinit var startDateButton: Button
     private lateinit var endDateButton: Button
+    private lateinit var barStartDate: Button
+    private lateinit var barEndDate: Button
     private lateinit var viewAllButton: Button
     private lateinit var viewPeriodButton: Button
+    private lateinit var barViewPeriod: Button
+    private lateinit var barViewCurrentWeek: Button
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var timesheetList: ArrayList<Timesheets>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,16 +95,41 @@ class DashboardFragment : Fragment() {
         endDateButton = view.findViewById(R.id.btnEndDatePicker)
         startDateButton = view.findViewById(R.id.btnStartDatePicker)
         pieChart = view.findViewById(R.id.pie_chart)
-        //Test3
+        barChart = view.findViewById(R.id.bar_chart)
+        barStartDate = view.findViewById(R.id.btnBarGraphStart)
+        barEndDate = view.findViewById(R.id.btnBarGraphEnd)
+        barViewPeriod = view.findViewById(R.id.btnBarView)
+        barViewCurrentWeek = view.findViewById(R.id.btnViewCurrentWeek)
+        recyclerView = view.findViewById(R.id.progressBarRecycler)
+        timesheetList = arrayListOf()
+
+        barStartDate.text = getTodaysDate()
+        barEndDate.text = getTodaysDate()
         startDateButton.text = getTodaysDate()
         endDateButton.text = getTodaysDate()
 
         query = firebaseRef.orderByChild("userId").equalTo(userId)
         setPieChartData(query)
 
+        val (startOfWeek, endOfWeek) = getCurrentWeek()
+
+        queryBarChart = firebaseRef
+            .orderByChild("date")
+            .startAt(startOfWeek)
+            .endAt(endOfWeek)
+        setBarChartData(queryBarChart)
+
         viewAllButton.setOnClickListener {
             query = firebaseRef.orderByChild("userId").equalTo(userId)
             setPieChartData(query)
+        }
+
+        barViewCurrentWeek.setOnClickListener {
+            queryBarChart = firebaseRef
+                .orderByChild("date")
+                .startAt(startOfWeek)
+                .endAt(endOfWeek)
+            setBarChartData(queryBarChart)
         }
 
         startDateButton.setOnClickListener{
@@ -98,6 +137,14 @@ class DashboardFragment : Fragment() {
         }
         endDateButton.setOnClickListener{
             openEndDatePicker(it)
+        }
+
+        barStartDate.setOnClickListener{
+            openBarStartDatePicker(it)
+        }
+
+        barEndDate.setOnClickListener {
+            openBarEndDatePicker(it)
         }
 
         viewPeriodButton.setOnClickListener {
@@ -111,12 +158,60 @@ class DashboardFragment : Fragment() {
             setPieChartData(query)
         }
 
-        val barChart = view.findViewById<BarChart>(R.id.bar_chart)
-        setUpBarChart(barChart)
-        setBarChartData(barChart)
+        barViewPeriod.setOnClickListener {
+            val startDate = barStartDate.text.toString()
+            val endDate = barEndDate.text.toString()
+
+            queryBarChart = firebaseRef
+                .orderByChild("date")
+                .startAt(startDate)
+                .endAt(endDate)
+            setBarChartData(queryBarChart)
+        }
+
+        queryProgressBar = firebaseRef
+            .orderByChild("userId")
+            .equalTo(userId)
+        fetchProgressBarData(queryProgressBar)
+
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing_between_items)
+        recyclerView.addItemDecoration(SpacesItemDecoration(spacingInPixels))
+
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = linearLayoutManager
+
         return view
     }
 
+    private fun fetchProgressBarData(query: Query){
+        if (!isAdded) {
+            return
+        }
+        timesheetList.clear()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+
+        query.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()) {
+                    for (timesheetSnapshot in snapshot.children) {
+                        val timesheet = timesheetSnapshot.getValue(Timesheets::class.java)
+                        val userId = timesheetSnapshot.child("userId").value.toString()
+                        if (userId == uid) {
+                            timesheet?.let {
+                                timesheetList.add(it)
+                            }
+                        }
+                    }
+                    val progressAdapter = ProgressBarAdapter(timesheetList)
+                    recyclerView.adapter = progressAdapter
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
 
     private fun setPieChartData(query: Query){
         pieChart.clear()
@@ -152,7 +247,6 @@ class DashboardFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
 
             }
-
         })
     }
 
@@ -216,7 +310,7 @@ class DashboardFragment : Fragment() {
         pieChart.invalidate()
     }
 
-    private fun setUpBarChart(barChart: BarChart) {
+    private fun setUpBarChart(totalHoursWorked: Map<String, Float>, minGoals: Map<String, Float>, maxGoals: Map<String, Float>) {
         barChart.setDrawBarShadow(false)
         barChart.setDrawValueAboveBar(true)
         barChart.description.isEnabled = false
@@ -226,35 +320,30 @@ class DashboardFragment : Fragment() {
         barChart.setTouchEnabled(false)
         barChart.animateY(1000)
         barChart.setDrawGridBackground(false)
-    }
 
-    private fun setBarChartData(barChart: BarChart) {
         val days = arrayOf("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun")
-        val entries1 = floatArrayOf(5f, 3f, 4f, 2f, 1f, 6f, 2f) // Adjusted entries to fit the range
-        val entries2 = floatArrayOf(8f, 7f, 8f, 4f, 7f, 8f, 3f) // Adjusted entries to fit the range
-        val entries3 = floatArrayOf(3f, 2f, 1f, 6f, 2f, 9f, 7f) // Adjusted entries to fit the range
 
         val values1 = ArrayList<BarEntry>()
         val values2 = ArrayList<BarEntry>()
         val values3 = ArrayList<BarEntry>()
 
         for (i in days.indices) {
-            values1.add(BarEntry(i.toFloat(), entries1[i]))
-            values2.add(BarEntry(i.toFloat(), entries2[i]))
-            values3.add(BarEntry(i.toFloat(), entries3[i]))
-
+            val day = days[i]
+            values1.add(BarEntry(i.toFloat(), totalHoursWorked[day] ?: 0f))
+            values2.add(BarEntry(i.toFloat(), maxGoals[day] ?: 0f))
+            values3.add(BarEntry(i.toFloat(), minGoals[day] ?: 0f))
         }
 
-        val set1 = BarDataSet(values1, "DataSet 1")
+        val set1 = BarDataSet(values1, "Hours Worked")
         set1.color = Color.parseColor("#A5BEEF")
 
-        val set2 = BarDataSet(values2, "DataSet 2")
+        val set2 = BarDataSet(values2, "Max Hours Goal")
         set2.color = Color.parseColor("#3F68BA")
 
-        val set3 = BarDataSet(values3, "DataSet 3")
+        val set3 = BarDataSet(values3, "Min Hours Goal")
         set3.color = Color.parseColor("#7B9BDA")
 
-        val data = BarData(set3, set2, set1)
+        val data = BarData(set1, set2, set3)
         data.barWidth = 0.16f
 
         barChart.data = data
@@ -310,8 +399,7 @@ class DashboardFragment : Fragment() {
 
         // Define legend entries
         val greenEntry = LegendEntry().apply {
-            formColor = Color.parseColor("#7B9BDA")
-
+            formColor = Color.parseColor("#A5BEEF")
             label = "Hours Worked"
         }
 
@@ -327,6 +415,116 @@ class DashboardFragment : Fragment() {
 
         // Set legend entries
         legend.setCustom(arrayOf(greenEntry, redEntry, blueEntry))
+    }
+
+
+
+    private fun setBarChartData(query: Query) {
+        barChart.clear()
+        barChart.invalidate()
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+
+        query.addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val totalHoursWorked = mutableMapOf<String, Float>()
+                    val minGoals = mutableMapOf<String, Float>()
+                    val maxGoals = mutableMapOf<String, Float>()
+
+                    for (day in arrayOf("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun")) {
+                        totalHoursWorked[day] = 0f
+                        minGoals[day] = Float.MAX_VALUE
+                        maxGoals[day] = 0f
+                    }
+
+                    val format = SimpleDateFormat("MMM d yyyy", Locale.getDefault())
+                    val calendar = Calendar.getInstance()
+
+                    for (dataSnapshot in snapshot.children) {
+                        val dateStr = dataSnapshot.child("date").value.toString()
+                        val startTime = dataSnapshot.child("startTime").value.toString()
+                        val endTime = dataSnapshot.child("endTime").value.toString()
+                        val userId = dataSnapshot.child("userId").value.toString()
+                        val minGoal = dataSnapshot.child("minHourGoal").value.toString().toFloat()
+                        val maxGoal = dataSnapshot.child("maxHourGoal").value.toString().toFloat()
+
+                        if (userId == uid) {
+                            try {
+                                val date = format.parse(dateStr)
+                                calendar.time = date
+                                val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+                                val day = when (dayOfWeek) {
+                                    Calendar.MONDAY -> "Mon"
+                                    Calendar.TUESDAY -> "Tues"
+                                    Calendar.WEDNESDAY -> "Wed"
+                                    Calendar.THURSDAY -> "Thurs"
+                                    Calendar.FRIDAY -> "Fri"
+                                    Calendar.SATURDAY -> "Sat"
+                                    Calendar.SUNDAY -> "Sun"
+                                    else -> null
+                                }
+
+                                if (day != null) {
+                                    val hoursSpent = calculateHoursSpent(startTime, endTime).toFloat()
+                                    totalHoursWorked[day] = totalHoursWorked.getOrDefault(day, 0f) + hoursSpent
+                                    minGoals[day] = minGoals.getOrDefault(day, Float.MAX_VALUE).coerceAtMost(minGoal)
+                                    maxGoals[day] = maxGoals.getOrDefault(day, 0f).coerceAtLeast(maxGoal)
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                    for (day in minGoals.keys) {
+                        if (minGoals[day] == Float.MAX_VALUE) {
+                            minGoals[day] = 0f
+                        }
+                    }
+                    // Call a method to set the bar chart data
+                    setUpBarChart(totalHoursWorked, minGoals, maxGoals)
+
+                }else {
+                    Log.d("DashboardFragment", "No data found")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("DashboardFragment", "Database error: ${error.message}")
+            }
+        })
+    }
+
+    private fun getCurrentWeek(): Pair<String, String> {
+        val calendar = Calendar.getInstance()
+        calendar.firstDayOfWeek = Calendar.MONDAY
+
+        // Set the calendar to the start of the week
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
+        val startOfWeek = calendar.time
+
+        // Set the calendar to the end of the week
+        calendar.add(Calendar.DAY_OF_WEEK, 6)
+        val endOfWeek = calendar.time
+
+        val dateFormat = SimpleDateFormat("MMM d yyyy", Locale.getDefault())
+        val startFormatted = dateFormat.format(startOfWeek).uppercase(Locale.getDefault())
+        val endFormatted = dateFormat.format(endOfWeek).uppercase(Locale.getDefault())
+        return Pair(startFormatted, endFormatted)
+    }
+
+    private fun getPastMonth(): Pair<String, String>{
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, -1)
+        val startDate = calendar.time
+        val endDate = Calendar.getInstance().time
+
+        val dateFormat = SimpleDateFormat("MMM d yyyy", Locale.getDefault())
+        val startFormatted = dateFormat.format(startDate).uppercase(Locale.getDefault())
+        val endFormatted = dateFormat.format(endDate).uppercase(Locale.getDefault())
+        return Pair(startFormatted, endFormatted)
     }
 
     private fun initStartDatePicker() {
@@ -347,6 +545,26 @@ class DashboardFragment : Fragment() {
         val cal = Calendar.getInstance()
         val style = AlertDialog.THEME_HOLO_LIGHT
         endDatePickerDialog = DatePickerDialog(requireContext(), style, dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+    }
+
+    private fun initBarStartDatePicker() {
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            val adjustedMonth = month + 1
+            barStartDate.text = makeDateString(dayOfMonth, adjustedMonth, year)
+        }
+        val cal = Calendar.getInstance()
+        val style = AlertDialog.THEME_HOLO_LIGHT
+        barStartPickerDialog = DatePickerDialog(requireContext(), style, dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+    }
+
+    private fun initBarEndDatePicker() {
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            val adjustedMonth = month + 1
+            barEndDate.text = makeDateString(dayOfMonth, adjustedMonth, year)
+        }
+        val cal = Calendar.getInstance()
+        val style = AlertDialog.THEME_HOLO_LIGHT
+        barEndPickerDialog = DatePickerDialog(requireContext(), style, dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
     }
     private fun getTodaysDate(): String {
         val cal = Calendar.getInstance()
@@ -390,5 +608,19 @@ class DashboardFragment : Fragment() {
             initEndDatePicker()
         }
         endDatePickerDialog.show()
+    }
+
+    fun openBarStartDatePicker(view: View) {
+        if (!::barStartPickerDialog.isInitialized) {
+            initBarStartDatePicker()
+        }
+        barStartPickerDialog.show()
+    }
+
+    fun openBarEndDatePicker(view: View) {
+        if (!::barEndPickerDialog.isInitialized) {
+            initBarEndDatePicker()
+        }
+        barEndPickerDialog.show()
     }
 }

@@ -25,7 +25,8 @@
         android:background="@drawable/roundstyle"
         android:backgroundTint="#C4DADA"
         android:textColor="@color/black"
-        android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Medium"
+        style="@style/CustomCalendarView"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/linearLayout"

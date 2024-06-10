@@ -8,9 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
         android:layout_width="322dp"
-        android:layout_height="76dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
+        android:layout_height="102dp"
         app:cardBackgroundColor="#C8B37D"
         app:cardCornerRadius="13dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,11 +21,11 @@
 
             <ImageView
                 android:id="@+id/imgCardView"
-                android:layout_width="70dp"
-                android:layout_height="60dp"
+                android:layout_width="74dp"
+                android:layout_height="66dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.063"
+                app:layout_constraintHorizontal_bias="0.064"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/default_photo_timesheet" />
@@ -44,7 +42,7 @@
                 app:layout_constraintHorizontal_bias="0.726"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.29" />
+                app:layout_constraintVertical_bias="0.197" />
 
             <TextView
                 android:id="@+id/txtNameCardView"
@@ -57,8 +55,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.726"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtDateCardView"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.726"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.733" />
+                app:layout_constraintVertical_bias="0.755" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,4 +10,8 @@
         <item>Date</item>
     </string-array>
 
+    <string-array name="calendar">
+
+    </string-array>
+
 </resources>
