@@ -27,22 +27,23 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="25dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="6dp"
                 android:scaleY="4"
-                app:layout_constraintBottom_toBottomOf="@+id/txtHoursSpent"
-                app:layout_constraintEnd_toStartOf="@+id/txtMaxHours"
+                app:layout_constraintBottom_toTopOf="@+id/txtMinHours"
+                app:layout_constraintEnd_toEndOf="@+id/txtStartDate"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/percentageCompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="19dp"
                 android:layout_marginBottom="5dp"
                 android:text="50% Completed"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtHoursSpent" />
+                app:layout_constraintStart_toEndOf="@+id/txtMinHours" />
 
             <TextView
                 android:id="@+id/txtProjectName"
@@ -50,10 +51,11 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="52dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="34dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginEnd="33dp"
+                android:layout_marginBottom="5dp"
                 android:text="ProjectName"
-                app:layout_constraintBottom_toTopOf="@+id/txtHoursSpent"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toTopOf="@+id/progressBar"
                 app:layout_constraintEnd_toStartOf="@+id/txtStartDate"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -63,38 +65,45 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="42dp"
-                android:layout_marginBottom="3dp"
+                android:layout_marginEnd="43dp"
+                android:layout_marginBottom="4dp"
                 android:text="StartDate"
-                app:layout_constraintBottom_toTopOf="@+id/txtMaxHours"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toTopOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/txtProjectName"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtMaxHours"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="27dp"
-                android:layout_marginBottom="27dp"
+                android:layout_width="36dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="7dp"
                 android:text="10hrs"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/txtHoursSpent"
-                app:layout_constraintTop_toBottomOf="@+id/txtStartDate" />
+                app:layout_constraintStart_toEndOf="@+id/progressBar"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtHoursSpent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="62dp"
-                android:layout_marginEnd="204dp"
-                android:layout_marginBottom="6dp"
+                android:layout_marginStart="10dp"
                 android:text="4hrs"
-                app:layout_constraintBottom_toTopOf="@+id/percentageCompleted"
-                app:layout_constraintEnd_toStartOf="@+id/txtMaxHours"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtProjectName" />
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+                app:layout_constraintStart_toStartOf="@+id/txtProjectName" />
+
+            <TextView
+                android:id="@+id/txtMinHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="27dp"
+                android:layout_marginBottom="5dp"
+                android:text="Min: 5hrs"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/progressBar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

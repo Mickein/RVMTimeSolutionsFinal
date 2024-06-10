@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#C8B37D"
+            android:background="#54C9E6"
             android:paddingLeft="20dp"
             app:layout_constraintBottom_toTopOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="@+id/textView2">
